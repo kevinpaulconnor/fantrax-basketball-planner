@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ftraxbballplanner-dev-103240-authRole",
+      "UnauthRoleArn": "arn:aws:iam::410413917760:role/amplify-ftraxbballplanner-dev-103240-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::410413917760:role/amplify-ftraxbballplanner-dev-103240-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-ftraxbballplanner-dev-103240-deployment",
+      "UnauthRoleName": "amplify-ftraxbballplanner-dev-103240-unauthRole",
+      "StackName": "amplify-ftraxbballplanner-dev-103240",
+      "StackId": "arn:aws:cloudformation:us-east-1:410413917760:stack/amplify-ftraxbballplanner-dev-103240/54d301c0-3fe8-11ec-aceb-0e7689609ebf",
+      "AmplifyAppId": "d3m81wcs7vy7b4"
+    }
+  }
+}
