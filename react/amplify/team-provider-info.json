@@ -10,6 +10,14 @@
       "StackName": "amplify-ftraxbballplanner-dev-103240",
       "StackId": "arn:aws:cloudformation:us-east-1:410413917760:stack/amplify-ftraxbballplanner-dev-103240/54d301c0-3fe8-11ec-aceb-0e7689609ebf",
       "AmplifyAppId": "d3m81wcs7vy7b4"
+    },
+    "categories": {
+      "function": {
+        "mainLambda": {
+          "deploymentBucketName": "amplify-ftraxbballplanner-dev-103240-deployment",
+          "s3Key": "amplify-builds/mainLambda-69784e423073424b4a66-build.zip"
+        }
+      }
     }
   }
 }

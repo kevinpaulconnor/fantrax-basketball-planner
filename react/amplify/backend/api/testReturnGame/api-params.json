@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/game",
+      "lambdaFunction": "mainLambda",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/game"
+    }
+  ],
+  "resourceName": "testReturnGame",
+  "apiName": "testReturnGame",
+  "functionArns": [
+    {
+      "lambdaFunction": "mainLambda"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-ftraxbballplanner-dev-103240-authRole",
+    "unAuthRoleName": "amplify-ftraxbballplanner-dev-103240-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "mainLambda",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}
