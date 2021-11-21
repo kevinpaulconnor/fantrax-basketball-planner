@@ -1,7 +1,16 @@
+/* Amplify Params - DO NOT EDIT
+	AUTH_FTRAXBBALLPLANNER45410204_USERPOOLID
+	ENV
+	REGION
+	STORAGE_S3DATA_BUCKETNAME
+Amplify Params - DO NOT EDIT */
 var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var axios = require('axios')
+var AWS = require('aws-sdk')
+const bucketName = process.env.STORAGE_S3DATA_BUCKETNAME
+var s3 = new AWS.S3()
 
 // declare a new express app
 var app = express()
@@ -19,13 +28,26 @@ app.use(function(req, res, next) {
 app.get('/game', function(req, res) {
   axios.get('https://balldontlie.io/api/v1/games?seasons[]=2021&start_date=2021-10-19&end_date=2021-10-19&page=1')
   .then(response => {
-    res.json({
-      data: response.data,
-      success: 'successfully fetched',
-      url: req.url,
-    })
+    const params ={
+        Bucket : bucketName,
+        Key : '2021schedule.json',
+        Body: JSON.stringify(response.data)
+    };
+    s3.putObject(params, function (err, data) {
+        if(err){
+            console.log(`Error creating file ${err.stack}`);
+            res.json({error: `error ferch form api: ${err}`});
+        } else {         
+            console.log('File Created');
+            res.json({
+              data: data,
+              success: 'successfully fetched',
+              url: req.url,
+            })
+        }
+    });
   })
-  .catch(err => res.json({error: "error ferch form api"}));
+  .catch(err => res.json({error: `error ferch form api: ${err}`}));
 });
 
 // /**********************

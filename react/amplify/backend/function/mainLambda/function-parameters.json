@@ -1,3 +1,21 @@
 {
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "permissions": {
+    "auth": {
+      "ftraxbballplanner45410204": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "s3data": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }
