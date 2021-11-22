@@ -15,7 +15,7 @@
       "function": {
         "mainLambda": {
           "deploymentBucketName": "amplify-ftraxbballplanner-dev-103240-deployment",
-          "s3Key": "amplify-builds/mainLambda-786c4667613676717a72-build.zip"
+          "s3Key": "amplify-builds/mainLambda-624d6833394d76633449-build.zip"
         }
       },
       "auth": {

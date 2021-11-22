@@ -17,7 +17,7 @@ function App() {
 
   async function callApi() {
     try{
-      const data = await API.get('testReturnGame', '/game', '');
+      const data = await API.get('testReturnGame', '/create-schedule', '');
       console.log(data);
       //updateGame(data);
     } catch (err) {
