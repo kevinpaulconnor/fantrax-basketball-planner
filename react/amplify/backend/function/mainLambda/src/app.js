@@ -24,30 +24,63 @@ app.use(function(req, res, next) {
   next()
 });
 
+app.get('/create-schedule', async function(req, res) {
+  /* Pull complete NBA 2021-22 schedule from BDL and write to S3 as json */
+  async function getSchedulePage(pageNum = 1) {
+    const url = `https://balldontlie.io/api/v1/games?seasons[]=2021&start_date=2021-10-19&end_date=2022-04-10&page=${pageNum}`;
+    const response = await axios.get(url);
+    return response.data;
+  }
 
-app.get('/game', function(req, res) {
-  axios.get('https://balldontlie.io/api/v1/games?seasons[]=2021&start_date=2021-10-19&end_date=2021-10-19&page=1')
-  .then(response => {
-    const params ={
-        Bucket : bucketName,
-        Key : '2021schedule.json',
-        Body: JSON.stringify(response.data)
+  function filterGames(newGames) {
+    let ret = [];
+    newGames.forEach(game => {
+      let newGame = { ...game };
+      let homeTeamId = game.home_team.id;
+      let awayTeamId = game.visitor_team.id;
+      delete newGame.period;
+      delete newGame.postseason;
+      delete newGame.season;
+      delete newGame.time;
+      newGame.home_team = homeTeamId;
+      newGame.visitor_team = awayTeamId;
+      ret.push(newGame);
+    });
+    return ret;
+  }
+
+  function write(item) {
+    const params ={ 
+      Bucket : bucketName,
+      Key : '2021schedule.json',
+      Body: JSON.stringify(item),
     };
     s3.putObject(params, function (err, data) {
-        if(err){
-            console.log(`Error creating file ${err.stack}`);
-            res.json({error: `error ferch form api: ${err}`});
-        } else {         
-            console.log('File Created');
-            res.json({
-              data: data,
-              success: 'successfully fetched',
-              url: req.url,
-            })
-        }
+      if(err){
+          console.log(`Error creating file ${err.stack}`);
+          res.json({error: `error writing file: ${err}`});
+      } else {         
+          console.log('Schedule File Created');
+          res.json({
+            success: 'Schedule File Created',
+            url: req.url,
+          })
+      }
     });
-  })
-  .catch(err => res.json({error: `error ferch form api: ${err}`}));
+  }
+
+  let bigGamesData = [];
+
+  let result = await getSchedulePage(1);
+  let nextPage = result.meta.next_page;
+  bigGamesData.push(filterGames(result.data));
+  while (nextPage !== null) {
+    result = await getSchedulePage(nextPage);
+    nextPage = result.meta.next_page;
+    bigGamesData.push(filterGames(result.data));
+  }
+  write(bigGamesData);
+
 });
 
 // /**********************
