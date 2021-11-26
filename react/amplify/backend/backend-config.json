@@ -23,7 +23,7 @@
     }
   },
   "api": {
-    "testReturnGame": {
+    "fantraxBasketball": {
       "service": "API Gateway",
       "providerPlugin": "awscloudformation",
       "dependsOn": [

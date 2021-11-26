@@ -1,0 +1,57 @@
+{
+  "paths": [
+    {
+      "name": "/create-schedule",
+      "lambdaFunction": "mainLambda",
+      "privacy": {
+        "private": true,
+        "auth": [
+          "/POST",
+          "/GET",
+          "/PUT",
+          "/PATCH",
+          "/DELETE"
+        ]
+      },
+      "policyResourceName": "/create-schedule"
+    },
+    {
+      "name": "/matchup-dates",
+      "lambdaFunction": "mainLambda",
+      "privacy": {
+        "private": true,
+        "auth": [
+          "/POST",
+          "/GET",
+          "/PUT",
+          "/PATCH",
+          "/DELETE"
+        ]
+      },
+      "policyResourceName": "/matchup-dates"
+    }
+  ],
+  "resourceName": "fantraxBasketball",
+  "apiName": "fantraxBasketball",
+  "functionArns": [
+    {
+      "lambdaFunction": "mainLambda"
+    }
+  ],
+  "privacy": {
+    "auth": 2,
+    "unauth": 0,
+    "authRoleName": "amplify-ftraxbballplanner-dev-103240-authRole",
+    "unAuthRoleName": "amplify-ftraxbballplanner-dev-103240-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "mainLambda",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}
