@@ -11,6 +11,7 @@ var axios = require('axios')
 var AWS = require('aws-sdk')
 const bucketName = process.env.STORAGE_S3DATA_BUCKETNAME
 var s3 = new AWS.S3()
+var { matchupDates } = require('./constants')
 
 // declare a new express app
 var app = express()
@@ -49,24 +50,13 @@ app.get('/create-schedule', async function(req, res) {
     return ret;
   }
 
-  function write(item) {
+  function write(item, filename) {
     const params ={ 
       Bucket : bucketName,
-      Key : '2021schedule.json',
+      Key : filename,
       Body: JSON.stringify(item),
     };
-    s3.putObject(params, function (err, data) {
-      if(err){
-          console.log(`Error creating file ${err.stack}`);
-          res.json({error: `error writing file: ${err}`});
-      } else {         
-          console.log('Schedule File Created');
-          res.json({
-            success: 'Schedule File Created',
-            url: req.url,
-          })
-      }
-    });
+    return s3.putObject(params, () => {}).promise();
   }
 
   let bigGamesData = [];
@@ -79,8 +69,37 @@ app.get('/create-schedule', async function(req, res) {
     nextPage = result.meta.next_page;
     bigGamesData.push(filterGames(result.data));
   }
-  write(bigGamesData);
+  bigGamesData = bigGamesData.flat();
+  
+  let matchupCount = 1;
+  let gamesThisMatchup;
+  let matchupPromises = [];
 
+  //write schedule to each matchup
+  matchupDates.forEach(async matchup => {
+    gamesThisMatchup = bigGamesData.filter(game =>
+      game.date >= matchup.start && game.date <= matchup.end
+    );
+    matchupPromises.push(write(gamesThisMatchup, `schedule-matchup-${matchupCount}.json`));
+    matchupCount += 1;
+  });
+
+  await Promise.all(matchupPromises).then(() => 
+    res.json({
+      success: 'process finished',
+      url: req.url,
+    })
+  );
+
+});
+
+app.get('/matchup-dates', function(req, res) {
+  // Add your code here
+  res.json({
+    success: 'get call succeed!', 
+    data: matchupDates,
+    url: req.url
+  });
 });
 
 // /**********************
