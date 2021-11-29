@@ -19,8 +19,6 @@ function App() {
   async function getMatchups() {
     try{
       const data = await API.get('fantraxBasketball', '/matchup-dates', '');
-      console.log(data);
-      //updateGame(data);
     } catch (err) {
       console.log('error:', err);
     }
@@ -29,8 +27,6 @@ function App() {
   async function callApi() {
     try{
       const data = await API.get('fantraxBasketball', '/create-schedule', '');
-      console.log(data);
-      //updateGame(data);
     } catch (err) {
       console.log('error:', err);
     }
@@ -47,7 +43,6 @@ function App() {
   if (!currentMatchup) {
     return <Loader />
   } else {
-    console.log(currentMatchup);
     return (
       <AmplifyProvider>
         {/* <Button
@@ -73,7 +68,7 @@ function App() {
           </Card>
         )}
       </Collection>
-        <Footer totalPages={10} initialPage={currentMatchup.id}/>
+        <Footer totalPages={21} callback={getMatchup} initialPage={currentMatchup.id}/>
       </AmplifyProvider>
     );
   }
