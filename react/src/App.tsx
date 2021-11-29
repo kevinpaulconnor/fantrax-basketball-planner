@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Amplify from '@aws-amplify/core';
-import { withAuthenticator, AmplifyProvider, Button, Loader } from '@aws-amplify/ui-react';
+import { withAuthenticator, AmplifyProvider, Button, Loader,
+  Collection, Card, Heading, Text } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { API } from 'aws-amplify';
 import Footer from './Footer';
@@ -56,6 +57,22 @@ function App() {
       >
         Get Current Matchup
       </Button> */}
+      <Heading level={1}>Matchup {currentMatchup.id} </Heading>
+      <Collection
+        type="list"
+        items={currentMatchup.games}
+        gap="1.5rem"
+        direction="row"
+        justifyContent="space-between"
+        wrap="wrap"
+      >
+        {(item, index) => (
+          <Card key={index} padding="1rem">
+            <Heading level={4}>{item.visitor_team} @ {item.home_team} </Heading>
+            <Text>{item.date}</Text>
+          </Card>
+        )}
+      </Collection>
         <Footer totalPages={10} initialPage={currentMatchup.id}/>
       </AmplifyProvider>
     );
