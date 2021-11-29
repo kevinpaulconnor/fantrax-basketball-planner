@@ -18,6 +18,33 @@ var app = express()
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
+function write(item, filename) {
+  const params ={ 
+    Bucket : bucketName,
+    Key : filename,
+    Body: JSON.stringify(item),
+  };
+  return s3.putObject(params, () => {}).promise();
+}
+
+function matchupFilename(id) {
+  return `schedule-matchup-${id}.json`;
+}
+
+async function read(filename) {
+  try {
+    const params = {
+      Bucket: bucketName,
+      Key: filename
+    }
+    const data = await s3.getObject(params).promise();
+
+    return JSON.parse(data.Body);
+  } catch (e) {
+    throw new Error(`Could not retrieve file from S3: ${e.message}`)
+  }
+}
+
 // Enable CORS for all methods
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
@@ -50,17 +77,7 @@ app.get('/create-schedule', async function(req, res) {
     return ret;
   }
 
-  function write(item, filename) {
-    const params ={ 
-      Bucket : bucketName,
-      Key : filename,
-      Body: JSON.stringify(item),
-    };
-    return s3.putObject(params, () => {}).promise();
-  }
-
   let bigGamesData = [];
-
   let result = await getSchedulePage(1);
   let nextPage = result.meta.next_page;
   bigGamesData.push(filterGames(result.data));
@@ -80,7 +97,7 @@ app.get('/create-schedule', async function(req, res) {
     gamesThisMatchup = bigGamesData.filter(game =>
       game.date >= matchup.start && game.date <= matchup.end
     );
-    matchupPromises.push(write(gamesThisMatchup, `schedule-matchup-${matchupCount}.json`));
+    matchupPromises.push(write(gamesThisMatchup, matchupFilename(matchupCount)));
     matchupCount += 1;
   });
 
@@ -98,6 +115,27 @@ app.get('/matchup-dates', function(req, res) {
   res.json({
     success: 'get call succeed!', 
     data: matchupDates,
+    url: req.url
+  });
+});
+
+app.get('/matchup/:id', async function(req, res) {
+  let matchupID;
+  if (req.params.id === 'current') {
+    let now = new Date().toISOString();
+    matchupId = matchupDates.findIndex(element => element.end > now)
+  } else {
+    matchupId = req.params.id;
+  }
+
+  const data = await read(matchupFilename(matchupId));
+  const ret = {
+    games: data,
+    id: matchupId,
+  }
+  res.json({
+    success: 'get call succeed!', 
+    data: ret,
     url: req.url
   });
 });

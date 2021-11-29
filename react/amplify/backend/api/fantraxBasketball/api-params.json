@@ -1,57 +1,73 @@
 {
-  "paths": [
-    {
-      "name": "/create-schedule",
-      "lambdaFunction": "mainLambda",
-      "privacy": {
-        "private": true,
-        "auth": [
-          "/POST",
-          "/GET",
-          "/PUT",
-          "/PATCH",
-          "/DELETE"
-        ]
-      },
-      "policyResourceName": "/create-schedule"
+    "paths": [
+        {
+            "name": "/create-schedule",
+            "lambdaFunction": "mainLambda",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/create-schedule"
+        },
+        {
+            "name": "/matchup-dates",
+            "lambdaFunction": "mainLambda",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/matchup-dates"
+        },
+        {
+            "name": "/matchup",
+            "lambdaFunction": "mainLambda",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/matchup"
+        }
+    ],
+    "resourceName": "fantraxBasketball",
+    "apiName": "fantraxBasketball",
+    "functionArns": [
+        {
+            "lambdaFunction": "mainLambda"
+        }
+    ],
+    "privacy": {
+        "auth": 3,
+        "unauth": 0,
+        "authRoleName": "amplify-ftraxbballplanner-dev-103240-authRole",
+        "unAuthRoleName": "amplify-ftraxbballplanner-dev-103240-unauthRole"
     },
-    {
-      "name": "/matchup-dates",
-      "lambdaFunction": "mainLambda",
-      "privacy": {
-        "private": true,
-        "auth": [
-          "/POST",
-          "/GET",
-          "/PUT",
-          "/PATCH",
-          "/DELETE"
-        ]
-      },
-      "policyResourceName": "/matchup-dates"
-    }
-  ],
-  "resourceName": "fantraxBasketball",
-  "apiName": "fantraxBasketball",
-  "functionArns": [
-    {
-      "lambdaFunction": "mainLambda"
-    }
-  ],
-  "privacy": {
-    "auth": 2,
-    "unauth": 0,
-    "authRoleName": "amplify-ftraxbballplanner-dev-103240-authRole",
-    "unAuthRoleName": "amplify-ftraxbballplanner-dev-103240-unauthRole"
-  },
-  "dependsOn": [
-    {
-      "category": "function",
-      "resourceName": "mainLambda",
-      "attributes": [
-        "Name",
-        "Arn"
-      ]
-    }
-  ]
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "mainLambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "23f4f237"
 }
