@@ -1,6 +1,8 @@
 import Amplify from '@aws-amplify/core';
 import { withAuthenticator, AmplifyProvider } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import { API } from 'aws-amplify';
+import Footer from './Footer';
 import config from './aws-exports';
 Amplify.configure(config);
 
@@ -27,7 +29,8 @@ function App() {
 
   return (
     <AmplifyProvider>
-      <div>byebye boilerplate</div>
+      <div> a div </div>
+      <Footer totalPages={10} initialPage={1}/>
     </AmplifyProvider>
   );
 }
