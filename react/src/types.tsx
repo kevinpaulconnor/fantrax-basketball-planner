@@ -9,5 +9,6 @@ export type Game = {
 };
 
 export type Matchup = {
-    games: Array<Game>
+    games: Array<Game>,
+    id: number
 };
