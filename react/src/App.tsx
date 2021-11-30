@@ -5,7 +5,8 @@ import { withAuthenticator, AmplifyProvider, Button, Loader,
 import '@aws-amplify/ui-react/styles.css';
 import { API } from 'aws-amplify';
 import Footer from './Footer';
-import { Matchup } from './types';
+import { Matchup, Team } from './types';
+import { getTeamFromId } from './utilities';
 import './base.css';
 import config from './aws-exports';
 Amplify.configure(config);
@@ -17,23 +18,17 @@ interface AppProps {
 
 
 function App({ signOut, user }: AppProps) {
-
+  const [teams, setTeams] = useState<[Team] | null>(null);
   const [currentMatchup, setCurrentMatchup] = useState<Matchup | null>(null);
   useEffect(() => {
     getMatchup('current');
+    getTeams();
   }, [])
 
-  async function getMatchups() {
+  async function getTeams() {
     try{
-      const data = await API.get('fantraxBasketball', '/matchup-dates', '');
-    } catch (err) {
-      console.log('error:', err);
-    }
-  }
-
-  async function callApi() {
-    try{
-      const data = await API.get('fantraxBasketball', '/create-schedule', '');
+      const data = await API.get('fantraxBasketball', '/teams', '');
+      setTeams(data.data);
     } catch (err) {
       console.log('error:', err);
     }
@@ -47,7 +42,8 @@ function App({ signOut, user }: AppProps) {
       console.log('error:', err);
     }
   }
-  if (!currentMatchup) {
+
+  if (!currentMatchup || !teams) {
     return <Loader />
   } else {
     return (
@@ -69,12 +65,17 @@ function App({ signOut, user }: AppProps) {
         justifyContent="space-between"
         wrap="wrap"
       >
-        {(item, index) => (
-          <Card key={index} padding="1rem">
-            <Heading level={4}>{item.visitor_team} @ {item.home_team} </Heading>
-            <Text>{item.date}</Text>
-          </Card>
-        )}
+        {(item, index) => {
+          const visitor = getTeamFromId(teams, item.visitor_team);
+          const home = getTeamFromId(teams, item.home_team);
+          console.log(item.visitor_team, visitor, item.home_team, home);
+          return (
+            <Card key={index} padding="1rem">
+              <Heading level={4}>{ visitor.abbreviation } @ { home.abbreviation } </Heading>
+              <Text>{item.date}</Text>
+            </Card>
+          )
+        }}
       </Collection>
         <Footer totalPages={21} callback={getMatchup} initialPage={currentMatchup.id}/>
       </AmplifyProvider>
