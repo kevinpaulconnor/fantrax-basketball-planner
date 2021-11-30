@@ -41,6 +41,9 @@ async function read(filename) {
 
     return JSON.parse(data.Body);
   } catch (e) {
+    if (e.code === "NoSuchKey") {
+      return e.code;
+    }
     throw new Error(`Could not retrieve file from S3: ${e.message}`)
   }
 }
@@ -111,7 +114,6 @@ app.get('/create-schedule', async function(req, res) {
 });
 
 app.get('/matchup-dates', function(req, res) {
-  // Add your code here
   res.json({
     success: 'get call succeed!', 
     data: matchupDates,
@@ -136,6 +138,22 @@ app.get('/matchup/:id', async function(req, res) {
   res.json({
     success: 'get call succeed!', 
     data: ret,
+    url: req.url
+  });
+});
+
+app.get('/teams', async function(req, res) {
+  const filename = 'nbateams.json';
+  let data = await read(filename);
+  if (data === "NoSuchKey") {
+    const url = 'https://www.balldontlie.io/api/v1/teams';
+    const response = await axios.get(url);
+    data = response.data.data;
+    await write(data, filename);
+  }
+  res.json({
+    success: 'get call succeed!', 
+    data: data,
     url: req.url
   });
 });
