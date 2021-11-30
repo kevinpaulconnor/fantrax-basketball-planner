@@ -125,7 +125,7 @@ app.get('/matchup/:id', async function(req, res) {
   let matchupID;
   if (req.params.id === 'current') {
     let now = new Date().toISOString();
-    matchupId = matchupDates.findIndex(element => element.end > now)
+    matchupId = matchupDates.findIndex(element => element.end > now) + 1;
   } else {
     matchupId = req.params.id;
   }
