@@ -1,0 +1,4 @@
+/* Hide Cognito Sign Up tab */
+.amplify-tabs {
+    display: none;
+  }

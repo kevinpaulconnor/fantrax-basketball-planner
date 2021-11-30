@@ -6,12 +6,19 @@ import '@aws-amplify/ui-react/styles.css';
 import { API } from 'aws-amplify';
 import Footer from './Footer';
 import { Matchup } from './types';
+import './base.css';
 import config from './aws-exports';
 Amplify.configure(config);
 
-function App() {
-  const [currentMatchup, setCurrentMatchup] = useState<Matchup | null>(null);
+interface AppProps {
+  signOut: Function,
+  user: any
+}
 
+
+function App({ signOut, user }: AppProps) {
+
+  const [currentMatchup, setCurrentMatchup] = useState<Matchup | null>(null);
   useEffect(() => {
     getMatchup('current');
   }, [])
@@ -45,14 +52,15 @@ function App() {
   } else {
     return (
       <AmplifyProvider>
-        {/* <Button
+        <Button
         loadingText=""
-        onClick={getCurrentMatchup}
+        onClick={() => signOut()}
         ariaLabel=""
       >
-        Get Current Matchup
-      </Button> */}
+        Sign Out
+      </Button>
       <Heading level={1}>Matchup {currentMatchup.id} </Heading>
+      <Heading level={2}>Hello {user.attributes.email} </Heading>
       <Collection
         type="list"
         items={currentMatchup.games}
