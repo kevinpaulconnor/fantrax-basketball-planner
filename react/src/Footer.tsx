@@ -16,18 +16,18 @@ const Footer = ({totalPages, initialPage, callback}: FooterProps) => {
             callback(currentPage + 1);
             setCurrentPage(currentPage + 1);
         }
-      }, [currentPage, totalPages]);
+      }, [currentPage, totalPages, callback]);
 
     const onPrev = useCallback(() => {
         if (currentPage > 1) {
             callback(currentPage - 1);
             setCurrentPage(currentPage - 1);
         }
-    }, [currentPage]);
+    }, [currentPage, callback]);
     const onChange = useCallback((newPage, prevPage) => {
         callback(newPage);
         setCurrentPage(newPage);
-    }, []);
+    }, [callback]);
 
   return (
       <Pagination
