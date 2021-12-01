@@ -1,4 +1,4 @@
 /* Hide Cognito Sign Up tab */
-.amplify-tabs {
+ [data-amplify-authenticator] .amplify-tabs {
     display: none;
   }
