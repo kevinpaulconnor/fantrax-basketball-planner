@@ -3,7 +3,8 @@ import Amplify from '@aws-amplify/core';
 import { withAuthenticator, Grid, AmplifyProvider, Loader, Tabs, TabItem } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Header from './Header';
-import PlayerCollection from './PlayerCollection';
+import PlayerCollection from './SetGames/PlayerCollection';
+import AddPlayer from './AddPlayer/AddPlayer';
 import { Matchup, Team } from './types';
 import { getMatchup, getTeams } from './services';
 import './base.css';
@@ -37,7 +38,9 @@ function App({ signOut, user }: AppProps) {
             <TabItem title="Set Games">
               <PlayerCollection currentMatchup={currentMatchup} teams={teams} />
             </TabItem>           
-            <TabItem title="Add Player">Tab 2 Content</TabItem>
+            <TabItem title="Add Player">
+              <AddPlayer currentMatchup={currentMatchup} />  
+            </TabItem>
           </Tabs>   
         </Grid>
       </AmplifyProvider>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Collection, Card, Heading, Text } from '@aws-amplify/ui-react';
-import { getTeamFromId } from './utilities';
+import { getTeamFromId } from '../utilities';
 import Footer from './Footer';
-import { getMatchup } from './services';
-import { Matchup, Team } from './types';
+import { getMatchup } from '../services';
+import { Matchup, Team } from '../types';
 
 interface PlayerCollectionProps {
     currentMatchup: Matchup,

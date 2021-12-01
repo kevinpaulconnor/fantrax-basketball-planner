@@ -21,13 +21,6 @@ const Header = ({signOut, user, currentMatchup} :HeaderProps) => {
             onClick={() => signOut()}
             ariaLabel=""
             >
-            Add Player
-            </Button>
-            <Button
-            loadingText=""
-            onClick={() => signOut()}
-            ariaLabel=""
-            >
             Sign Out
             </Button>
             <Text>Hello {user.attributes.email} </Text>
