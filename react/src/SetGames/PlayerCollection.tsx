@@ -7,7 +7,7 @@ import { Matchup, Team } from '../types';
 
 interface PlayerCollectionProps {
     currentMatchup: Matchup,
-    teams: [Team]
+    teams: Team[]
 }
 
 const PlayerCollection = ({teams, currentMatchup} :PlayerCollectionProps) => {

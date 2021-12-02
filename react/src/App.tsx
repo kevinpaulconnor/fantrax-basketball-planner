@@ -17,7 +17,7 @@ interface AppProps {
 }
 
 function App({ signOut, user }: AppProps) {
-  const [teams, setTeams] = useState<[Team] | null>(null);
+  const [teams, setTeams] = useState<Team[] | null>(null);
   const [currentMatchup, setCurrentMatchup] = useState<Matchup | null>(null);
   useEffect(() => {
     getMatchup('current', setCurrentMatchup);
