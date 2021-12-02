@@ -1,3 +1,19 @@
+export enum RosterStatus {
+    SHOULD_PLAY,
+    COULD_PLAY,
+    SHOULD_NOT_PLAY,
+}
+
+export type Player = {
+    id: number,
+    first_name: string,
+    last_name: string,
+    position: string,
+    team: Team,
+    status: RosterStatus,
+    notes: string,
+}
+
 export type Team = {
     abbreviation: string,
     city: string,
@@ -20,5 +36,6 @@ export type Game = {
 
 export type Matchup = {
     games: Array<Game>,
+    roster: Array<Player>,
     id: number
 };
