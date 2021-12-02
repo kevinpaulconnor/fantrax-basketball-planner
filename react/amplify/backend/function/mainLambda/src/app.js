@@ -9,9 +9,11 @@ var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var axios = require('axios')
 var AWS = require('aws-sdk')
-const bucketName = process.env.STORAGE_S3DATA_BUCKETNAME
 var s3 = new AWS.S3()
+
+const BDLBaseUrl = 'https://balldontlie.io/api/v1';
 var { matchupDates } = require('./constants')
+const bucketName = process.env.STORAGE_S3DATA_BUCKETNAME
 
 // declare a new express app
 var app = express()
@@ -58,7 +60,7 @@ app.use(function(req, res, next) {
 app.get('/create-schedule', async function(req, res) {
   /* Pull complete NBA 2021-22 schedule from BDL and write to S3 as json */
   async function getSchedulePage(pageNum = 1) {
-    const url = `https://balldontlie.io/api/v1/games?seasons[]=2021&start_date=2021-10-19&end_date=2022-04-10&page=${pageNum}`;
+    const url = `${BDLBaseUrl}/games?seasons[]=2021&start_date=2021-10-19&end_date=2022-04-10&page=${pageNum}`;
     const response = await axios.get(url);
     return response.data;
   }
@@ -146,7 +148,7 @@ app.get('/teams', async function(req, res) {
   const filename = 'nbateams.json';
   let data = await read(filename);
   if (data === "NoSuchKey") {
-    const url = 'https://www.balldontlie.io/api/v1/teams';
+    const url = `${BDLBaseUrl}/teams`;
     const response = await axios.get(url);
     data = response.data.data;
     await write(data, filename);
@@ -156,6 +158,14 @@ app.get('/teams', async function(req, res) {
     data: data,
     url: req.url
   });
+});
+
+app.get('/bdl-proxy/:route', async function(req, res) {
+  // proxy calls from front end to BDL url
+  const search = new URL(req.url, "https://zombo.com").search;
+  const url = `${BDLBaseUrl}/${req.params.route}${search}`;
+  const response = await axios.get(url);  
+  res.json({success: 'get call succeed!', data: response.data.data, url: req.url});
 });
 
 // /**********************
