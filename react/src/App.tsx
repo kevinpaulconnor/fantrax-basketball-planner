@@ -36,7 +36,7 @@ function App({ signOut, user }: AppProps) {
           <Header user={user} signOut={signOut} currentMatchup={currentMatchup} />
           <Tabs>
             <TabItem title="Set Games">
-              <PlayerCollection currentMatchup={currentMatchup} teams={teams} />
+              <PlayerCollection setCurrentMatchup={setCurrentMatchup} currentMatchup={currentMatchup} teams={teams} />
             </TabItem>           
             <TabItem title="Add Player">
               <AddPlayer currentMatchup={currentMatchup} />  

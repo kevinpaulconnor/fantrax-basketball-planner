@@ -6,11 +6,16 @@ import { getMatchup } from '../services';
 import { Matchup, Team } from '../types';
 
 interface PlayerCollectionProps {
+    setCurrentMatchup: Function,
     currentMatchup: Matchup,
     teams: Team[]
 }
 
-const PlayerCollection = ({teams, currentMatchup} :PlayerCollectionProps) => {
+const PlayerCollection = ({teams, currentMatchup, setCurrentMatchup} :PlayerCollectionProps) => {
+    const callback = (id: number) => {
+        getMatchup(id, setCurrentMatchup);
+    }
+    
     return (
         <React.Fragment>
             <Collection
@@ -32,7 +37,7 @@ const PlayerCollection = ({teams, currentMatchup} :PlayerCollectionProps) => {
             )
             }}
         </Collection>
-        <Footer totalPages={21} callback={getMatchup} initialPage={currentMatchup.id}/>
+        <Footer totalPages={21} callback={callback} initialPage={currentMatchup.id}/>
       </React.Fragment>
     )
 }
