@@ -41,7 +41,10 @@ async function read(filename) {
     }
     const data = await s3.getObject(params).promise();
 
-    return JSON.parse(data.Body);
+    return {
+      data: JSON.parse(data.Body),
+      lastModified: data.LastModified,
+    }
   } catch (e) {
     if (e.code === "NoSuchKey") {
       return e.code;
@@ -134,7 +137,8 @@ app.get('/matchup/:id', async function(req, res) {
 
   const data = await read(matchupFilename(matchupId));
   const ret = {
-    games: data,
+    games: data.data,
+    lastModified: data.lastModified,
     id: matchupId,
   }
   res.json({
@@ -147,7 +151,7 @@ app.get('/matchup/:id', async function(req, res) {
 app.get('/teams', async function(req, res) {
   const filename = 'nbateams.json';
   let data = await read(filename);
-  if (data === "NoSuchKey") {
+  if (data.data === "NoSuchKey") {
     const url = `${BDLBaseUrl}/teams`;
     const response = await axios.get(url);
     data = response.data.data;
@@ -155,7 +159,7 @@ app.get('/teams', async function(req, res) {
   }
   res.json({
     success: 'get call succeed!', 
-    data: data,
+    data: data.data,
     url: req.url
   });
 });
