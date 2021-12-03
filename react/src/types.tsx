@@ -37,5 +37,6 @@ export type Game = {
 export type Matchup = {
     games: Array<Game>,
     roster: Array<Player>,
+    lastModified: string,
     id: number
 };

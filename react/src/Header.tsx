@@ -25,7 +25,8 @@ const Header = ({signOut, user, currentMatchup} :HeaderProps) => {
             </Button>
             <Text>Hello {user.attributes.email} </Text>
         </Flex>
-        <Heading level={1}>Matchup {currentMatchup.id} </Heading> 
+        <Heading level={1}>Matchup {currentMatchup.id} </Heading>
+        <Heading level={6}>(last modified {new Date(currentMatchup.lastModified).toLocaleString()})</Heading>
       </React.Fragment>
     )
 }

@@ -15,7 +15,7 @@ const AddPlayer = ({ currentMatchup } :AddPlayerProps) => {
         setPossiblePlayers(null);
         if (e.target.value.length > 1) {
             setLoading(true);
-            const response = await findPlayers(e.target.value, (data: Array<Player>) => {
+            await findPlayers(e.target.value, (data: Array<Player>) => {
                 /* generally, active(ish) players seem to have position filled in */
                 let filteredData = data.filter(elem => elem.position !== '');
     ;           setPossiblePlayers(filteredData.reverse());
@@ -23,6 +23,11 @@ const AddPlayer = ({ currentMatchup } :AddPlayerProps) => {
             });
         }
     }, 500);
+
+    const handleAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLoading(true);
+        const id = e.target.value;
+    }
 
     function renderPossiblePlayers() {
         const ret:JSX.Element[] = [];
@@ -32,7 +37,8 @@ const AddPlayer = ({ currentMatchup } :AddPlayerProps) => {
                     label={`${player.first_name} ${player.last_name}, ${player.position}, ${player.team.full_name}`} 
                     name={player.id.toString()}
                     key={player.id.toString()}
-                    value="yes"
+                    value={player.id.toString()}
+                    onChange={handleAdd}
                 />);
             });
         }
@@ -53,13 +59,14 @@ const AddPlayer = ({ currentMatchup } :AddPlayerProps) => {
                 descriptiveText="At least two letters. Spaces will work, but put first name first: 'Lebron James' returns results; 'James Lebron' does not"
                 onChange={handleChange}
             />
-            {loading && <Loader />}
             </Flex>
-            {possiblePlayers !== null &&
-                <Card>
-                    {renderPossiblePlayers()}
-                </Card>
-            }
+
+            <Card>
+                {possiblePlayers !== null && !loading &&
+                    renderPossiblePlayers()
+                }
+                {loading && <Loader />}
+            </Card>
         </Card>
     )
 }
