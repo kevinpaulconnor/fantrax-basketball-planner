@@ -1,90 +1,90 @@
 module.exports.matchupDates = [
-{
-    start: new Date("2021-10-19").toISOString(),
-    end: new Date("2021-10-24").toISOString(),
-},
-{
-    start: new Date("2021-10-25").toISOString(),
-    end: new Date("2021-10-31").toISOString(),
-},
-{
-    start: new Date("2021-11-1").toISOString(),
-    end: new Date("2021-11-7").toISOString(),
-},
-{
-    start: new Date("2021-11-8").toISOString(),
-    end: new Date("2021-11-14").toISOString(),
-},
-{
-    start: new Date("2021-11-15").toISOString(),
-    end: new Date("2021-11-21").toISOString(),
-},
-{
-    start: new Date("2021-11-22").toISOString(),
-    end: new Date("2021-11-28").toISOString(),
-},
-{
-    start: new Date("2021-11-29").toISOString(),
-    end: new Date("2021-12-5").toISOString(),
-},
-{
-    start: new Date("2021-12-6").toISOString(),
-    end: new Date("2021-12-12").toISOString(),
-},
-{
-    start: new Date("2021-12-13").toISOString(),
-    end: new Date("2021-12-19").toISOString(),
-},
-{
-    start: new Date("2021-12-20").toISOString(),
-    end: new Date("2021-12-26").toISOString(),
-},
-{
-    start: new Date("2021-12-27").toISOString(),
-    end: new Date("2022-1-2").toISOString(),
-},
-{
-    start: new Date("2022-1-3").toISOString(),
-    end: new Date("2022-1-9").toISOString(),
-},
-{
-    start: new Date("2022-1-10").toISOString(),
-    end: new Date("2022-1-16").toISOString(),
-},
-{
-    start: new Date("2022-1-17").toISOString(),
-    end: new Date("2022-1-23").toISOString(),
-},
-{
-    start: new Date("2022-1-24").toISOString(),
-    end: new Date("2022-1-30").toISOString(),
-},
-{
-    start: new Date("2022-1-31").toISOString(),
-    end: new Date("2022-2-6").toISOString(),
-},
-{
-    start: new Date("2022-2-7").toISOString(),
-    end: new Date("2022-2-13").toISOString(),
-},
-{
-    start: new Date("2022-2-14").toISOString(),
-    end: new Date("2022-2-27").toISOString(),
-    // probably has a different gp limit?
-},
-// colbys playoffs begin
-{
-    start: new Date("2022-2-28").toISOString(),
-    end: new Date("2022-3-6").toISOString(),
-},
-{
-    start: new Date("2022-3-7").toISOString(),
-    end: new Date("2022-3-20").toISOString(),
-    // probably has a different gp limit?
-},
-{
-    start: new Date("2022-3-21").toISOString(),
-    end: new Date("2022-4-3").toISOString(),
-    // probably has a different gp limit?
-},
-];
+    {
+        start: new Date("2021-10-19T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-10-24T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-10-25T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-10-31T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-11-01T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-11-07T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-11-08T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-11-14T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-11-15T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-11-21T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-11-22T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-11-28T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-11-29T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-12-05T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-12-06T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-12-12T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-12-13T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-12-19T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-12-20T22:30:00.000-08:00").toISOString(),
+        end: new Date("2021-12-26T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2021-12-27T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-01-02T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-01-03T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-01-09T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-01-10T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-01-16T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-01-17T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-01-23T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-01-24T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-01-30T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-01-31T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-02-06T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-02-07T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-02-13T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-02-14T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-02-27T22:30:00.000-08:00").toISOString(),
+        // probably has a different gp limit?
+    },
+    // colbys playoffs begin
+    {
+        start: new Date("2022-02-28T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-03-06T22:30:00.000-08:00").toISOString(),
+    },
+    {
+        start: new Date("2022-03-07T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-03-20T22:30:00.000-08:00").toISOString(),
+        // probably has a different gp limit?
+    },
+    {
+        start: new Date("2022-03-21T22:30:00.000-08:00").toISOString(),
+        end: new Date("2022-04-03T22:30:00.000-08:00").toISOString(),
+        // probably has a different gp limit?
+    },
+    ];
