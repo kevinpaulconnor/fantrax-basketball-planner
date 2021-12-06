@@ -40,7 +40,6 @@ async function read(filename) {
       Key: filename
     }
     const data = await s3.getObject(params).promise();
-
     return {
       data: JSON.parse(data.Body),
       lastModified: data.LastModified,
@@ -170,6 +169,31 @@ app.get('/bdl-proxy/:route', async function(req, res) {
   const url = `${BDLBaseUrl}/${req.params.route}${search}`;
   const response = await axios.get(url);  
   res.json({success: 'get call succeed!', data: response.data.data, url: req.url});
+});
+
+app.get('/players', async function(req, res) {
+  const response = await read('players.json');
+  let ret = {
+    players: [],
+    lastModified: 'Never'
+  }
+  if (response !== "NoSuchKey") {
+    ret = {
+      players: response.data,
+      lastModified: response.lastModified
+    }
+  }
+  res.json({
+    success: 'get call succeed!', 
+    data: ret,
+    url: req.url});
+});
+
+app.post('/players', async function(req, res) {
+  // overwrite the set of players on our roster
+  // so must pass in all current players to maintain
+  await write(req.body.data, 'players.json');
+  res.json({success: 'put call succeed!', url: req.url});
 });
 
 // /**********************

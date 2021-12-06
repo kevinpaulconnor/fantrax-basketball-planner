@@ -74,6 +74,21 @@
                 ]
             },
             "policyResourceName": "/bdl-proxy"
+        },
+        {
+            "name": "/players",
+            "lambdaFunction": "mainLambda",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/players"
         }
     ],
     "resourceName": "fantraxBasketball",
@@ -84,7 +99,7 @@
         }
     ],
     "privacy": {
-        "auth": 5,
+        "auth": 6,
         "unauth": 0,
         "authRoleName": "amplify-ftraxbballplanner-dev-103240-authRole",
         "unAuthRoleName": "amplify-ftraxbballplanner-dev-103240-unauthRole"
@@ -99,5 +114,5 @@
             ]
         }
     ],
-    "uuid": "3525cc2f"
+    "uuid": "bd77994e"
 }
