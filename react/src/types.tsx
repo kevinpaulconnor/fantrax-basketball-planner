@@ -14,6 +14,11 @@ export type Player = {
     notes: string,
 }
 
+export type Roster = {
+    players: Player[],
+    lastModified: string,
+}
+
 export type Team = {
     abbreviation: string,
     city: string,
@@ -36,7 +41,6 @@ export type Game = {
 
 export type Matchup = {
     games: Array<Game>,
-    roster: Array<Player>,
     lastModified: string,
     id: number
 };

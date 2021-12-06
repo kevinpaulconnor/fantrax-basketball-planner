@@ -3,11 +3,12 @@ import { Collection, Card, Heading, Text } from '@aws-amplify/ui-react';
 import { getTeamFromId } from '../utilities';
 import Footer from './Footer';
 import { getMatchup } from '../services';
-import { Matchup, Team } from '../types';
+import { Matchup, Team, Roster } from '../types';
 
 interface PlayerCollectionProps {
     setCurrentMatchup: Function,
     currentMatchup: Matchup,
+    roster: Roster,
     teams: Team[]
 }
 
