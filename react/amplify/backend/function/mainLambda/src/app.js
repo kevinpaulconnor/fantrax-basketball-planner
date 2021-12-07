@@ -104,7 +104,12 @@ app.get('/create-schedule', async function(req, res) {
     gamesThisMatchup = bigGamesData.filter(game =>
       game.date >= matchup.start && game.date <= matchup.end
     );
-    matchupPromises.push(write(gamesThisMatchup, matchupFilename(matchupCount)));
+    const matchupToWrite = {
+      games: gamesThisMatchup,
+      opponent: matchup.opponent,
+      selectedGames: [],
+    }
+    matchupPromises.push(write(matchupToWrite, matchupFilename(matchupCount)));
     matchupCount += 1;
   });
 
@@ -136,7 +141,9 @@ app.get('/matchup/:id', async function(req, res) {
 
   const data = await read(matchupFilename(matchupId));
   const ret = {
-    games: data.data,
+    games: data.data.games,
+    opponent: data.data.opponent,
+    selectedGames: data.data.selectedGames,
     lastModified: data.lastModified,
     id: matchupId,
   }
