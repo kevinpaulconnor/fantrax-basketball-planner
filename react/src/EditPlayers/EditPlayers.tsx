@@ -3,15 +3,14 @@ import { Card, Flex, TextField, Heading,
     Text, Loader, CheckboxField, IconClose, useTheme } from '@aws-amplify/ui-react';
 import { findPlayers, postPlayers, getPlayers } from '../services';
 import { debounce } from '../utilities';
-import { Matchup, Player, Roster } from '../types'; 
+import { Player, Roster } from '../types'; 
 
 interface EditPlayersProps {
-    currentMatchup: Matchup,
     roster: Roster,
     setRoster: Function
 }
 
-const EditPlayers = ({ currentMatchup, roster, setRoster } :EditPlayersProps) => {
+const EditPlayers = ({ roster, setRoster } :EditPlayersProps) => {
     const { tokens } = useTheme();
     const [loading, setLoading] = useState(false);
     const [possiblePlayers, setPossiblePlayers] = useState<Player[] | null>(null);

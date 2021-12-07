@@ -46,7 +46,6 @@ function App({ signOut, user }: AppProps) {
             </TabItem>           
             <TabItem title="Add/Remove Player">
               <EditPlayers
-                currentMatchup={currentMatchup}
                 roster={roster}
                 setRoster={setRoster}
               />  
