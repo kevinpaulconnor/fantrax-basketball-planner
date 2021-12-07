@@ -108,6 +108,8 @@ app.get('/create-schedule', async function(req, res) {
       games: gamesThisMatchup,
       opponent: matchup.opponent,
       selectedGames: [],
+      start: matchup.start,
+      end: matchup.end,
     }
     matchupPromises.push(write(matchupToWrite, matchupFilename(matchupCount)));
     matchupCount += 1;
@@ -144,6 +146,8 @@ app.get('/matchup/:id', async function(req, res) {
     games: data.data.games,
     opponent: data.data.opponent,
     selectedGames: data.data.selectedGames,
+    start: data.data.start,
+    end: data.data.end,
     lastModified: data.lastModified,
     id: matchupId,
   }
