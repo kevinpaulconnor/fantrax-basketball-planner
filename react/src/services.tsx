@@ -11,6 +11,10 @@ async function baseAPIFetch(endpoint:string, callback:Function) {
     }
 }
 
+export async function createSchedule(callback:Function) {
+    baseAPIFetch(`/create-schedule`, callback);
+}
+
 export async function getMatchup(id:string|number, callback:Function) {
     baseAPIFetch(`/matchup/${id}`, callback);
 }

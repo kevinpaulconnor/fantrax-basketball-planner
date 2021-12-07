@@ -41,6 +41,11 @@ export type Game = {
 
 export type Matchup = {
     games: Array<Game>,
+    opponent: string,
+    selectedGames: [{
+        playerId: number,
+        gameId: number
+    }],
     lastModified: string,
     id: number
 };
