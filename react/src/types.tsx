@@ -46,6 +46,8 @@ export type Matchup = {
         playerId: number,
         gameId: number
     }],
+    start: Date,
+    end: Date,
     lastModified: string,
     id: number
 };
