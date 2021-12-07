@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Card, Flex, TextField, Heading, Text, Loader, CheckboxField } from '@aws-amplify/ui-react';
-import { findPlayers, postPlayers } from '../services';
+import { Card, Flex, TextField, Heading, 
+    Text, Loader, CheckboxField, IconClose, useTheme } from '@aws-amplify/ui-react';
+import { findPlayers, postPlayers, getPlayers } from '../services';
 import { debounce } from '../utilities';
 import { Matchup, Player, Roster } from '../types'; 
 
@@ -11,13 +12,12 @@ interface EditPlayersProps {
 }
 
 const EditPlayers = ({ currentMatchup, roster, setRoster } :EditPlayersProps) => {
+    const { tokens } = useTheme();
     const [loading, setLoading] = useState(false);
     const [possiblePlayers, setPossiblePlayers] = useState<Player[] | null>(null);
     const labelFormat = (player:Player) => {
-        console.log(player)
         return `${player.first_name} ${player.last_name}, ${player.position}, ${player.team.full_name}`;
     }
-    console.log(roster.players)
     const handleChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         setPossiblePlayers(null);
         if (e.target.value.length > 1) {
@@ -33,10 +33,25 @@ const EditPlayers = ({ currentMatchup, roster, setRoster } :EditPlayersProps) =>
 
     const handleAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setLoading(true);
-        const id = parseInt(e.target.value);
-        const player = possiblePlayers?.find(player => player.id === id);
-        if (player) {
-            await postPlayers([player], (e:any) => console.log(e))
+        const id = parseInt(e.currentTarget.value);
+        const newPlayer = possiblePlayers?.find(player => player.id === id);
+        if (newPlayer) {
+            const newRoster = [...roster.players];
+            newRoster.push(newPlayer);
+            await postPlayers(newRoster, (e:any) => getPlayers(setRoster))
+        }
+        setLoading(false);
+    }
+
+    const handleDelete = async (e:React.MouseEvent<HTMLDivElement>) => {
+        setLoading(true);
+        let id = e.currentTarget.getAttribute("data-playerid");
+        if (id) {
+            let parsedId = parseInt(id);
+            const newRoster = roster.players.filter(player => player.id !== parsedId);
+            if (newRoster) {
+                await postPlayers(newRoster, (e:any) => getPlayers(setRoster))
+            }
         }
         setLoading(false);
     }
@@ -63,7 +78,15 @@ const EditPlayers = ({ currentMatchup, roster, setRoster } :EditPlayersProps) =>
     const renderCurrentPlayers = () => {
         let ret:JSX.Element[] = [];
         roster.players.forEach(player => {
-            ret.push(<div key={player.id}>{labelFormat(player)}</div>);
+            ret.push(<div key={player.id}
+                onClick={handleDelete}
+                data-playerid={player.id}
+            >
+                {labelFormat(player)}
+                <IconClose
+                    color={tokens.colors.red[100]}
+                />
+            </div>);
         })
         return ret;
     }
