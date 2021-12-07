@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, Flex, TextField, Heading, 
     Text, Loader, CheckboxField, IconClose, useTheme } from '@aws-amplify/ui-react';
 import { findPlayers, postPlayers, getPlayers } from '../services';
-import { debounce } from '../utilities';
+import { debounce, formatPlayerString } from '../utilities';
 import { Player, Roster } from '../types'; 
 
 interface EditPlayersProps {
@@ -14,9 +14,7 @@ const EditPlayers = ({ roster, setRoster } :EditPlayersProps) => {
     const { tokens } = useTheme();
     const [loading, setLoading] = useState(false);
     const [possiblePlayers, setPossiblePlayers] = useState<Player[] | null>(null);
-    const labelFormat = (player:Player) => {
-        return `${player.first_name} ${player.last_name}, ${player.position}, ${player.team.full_name}`;
-    }
+
     const handleChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         setPossiblePlayers(null);
         if (e.target.value.length > 1) {
@@ -60,7 +58,7 @@ const EditPlayers = ({ roster, setRoster } :EditPlayersProps) => {
         if (possiblePlayers !== null) {
             possiblePlayers.forEach(player => {
                 ret.push(<CheckboxField 
-                    label={labelFormat(player)} 
+                    label={formatPlayerString(player)} 
                     name={player.id.toString()}
                     key={player.id.toString()}
                     value={player.id.toString()}
@@ -81,7 +79,7 @@ const EditPlayers = ({ roster, setRoster } :EditPlayersProps) => {
                 onClick={handleDelete}
                 data-playerid={player.id}
             >
-                {labelFormat(player)}
+                {formatPlayerString(player)}
                 <IconClose
                     color={tokens.colors.red[100]}
                 />
