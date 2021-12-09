@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     TableCell,
     TableRow,
+    IconCheckCircle,
+    useTheme,
   } from '@aws-amplify/ui-react';
 import { getTeamFromId, formatPlayerString } from '../utilities';
 import { getMatchup } from '../services';
@@ -15,6 +17,8 @@ interface PlayerRowProps {
 }
 
 const PlayerRow = ({currentMatchup, player, teams, setCurrentMatchup} :PlayerRowProps) => {
+    const { tokens } = useTheme();
+    const [saved, setSaved] = useState(false);
     const matchupStart = new Date(currentMatchup.start).toISOString();
     const playerGameDay = (daysFromMatchupStart:number) => {
         let ret = '';
@@ -35,7 +39,10 @@ const PlayerRow = ({currentMatchup, player, teams, setCurrentMatchup} :PlayerRow
 
     return (    
         <TableRow>
-            <TableCell>{formatPlayerString(player)}</TableCell>
+            <TableCell>
+                {formatPlayerString(player)}
+                <IconCheckCircle color={tokens.colors.green[60]} size="large"/>
+            </TableCell>
             <TableCell>{playerGameDay(0)}</TableCell>
             <TableCell>{playerGameDay(1)}</TableCell>
             <TableCell>{playerGameDay(2)}</TableCell>
