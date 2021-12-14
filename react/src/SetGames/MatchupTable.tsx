@@ -1,5 +1,4 @@
 import React from 'react';
-import { Collection, Card, Heading, Text } from '@aws-amplify/ui-react';
 import {
     Table,
     TableCell,
@@ -7,45 +6,13 @@ import {
     TableHead,
     TableRow,
   } from '@aws-amplify/ui-react';
-import PlayerRow from './PlayerRow';
-import { getTeamFromId } from '../utilities';
-import { getMatchup } from '../services';
-import { Matchup, Team, Roster } from '../types';
 
 interface MatchupTableProps {
-    setCurrentMatchup: Function,
-    currentMatchup: Matchup,
-    roster: Roster,
-    teams: Team[]
+    shouldPlayChildren: React.ReactNode,
 }
 
-const MatchupTable = ({teams, currentMatchup, roster, setCurrentMatchup} :MatchupTableProps) => {
-    const callback = (id: number) => {
-        getMatchup(id, setCurrentMatchup);
-    }
-    console.log(roster);
-    return (
-    //     <Collection
-    //     type="list"
-    //     items={currentMatchup.games}
-    //     gap="1.5rem"
-    //     direction="row"
-    //     justifyContent="space-between"
-    //     wrap="wrap"
-    // >
-    //     {(item, index) => {
-    //     const visitor = getTeamFromId(teams, item.visitor_team);
-    //     const home = getTeamFromId(teams, item.home_team);
-    //     return (
-    //         <Card key={index} padding="1rem">
-    //         <Heading level={4}>{ visitor.abbreviation } @ { home.abbreviation } </Heading>
-    //         <Text>{item.date}</Text>
-    //         </Card>
-    //     )
-    //     }}
-    // </Collection>
-
-      
+const MatchupTable = ({shouldPlayChildren} :MatchupTableProps) => {
+    return (      
         <Table>
           <TableHead>
             <TableRow>
@@ -65,12 +32,7 @@ const MatchupTable = ({teams, currentMatchup, roster, setCurrentMatchup} :Matchu
             <TableRow>
               <TableCell as="th">Should Play</TableCell>
             </TableRow>
-            <PlayerRow
-                setCurrentMatchup={setCurrentMatchup}
-                currentMatchup={currentMatchup}
-                player={roster.players[0]}
-                teams={teams}
-            />
+            {shouldPlayChildren}
             <TableRow>
               <TableCell as="th">Could Play</TableCell>
             </TableRow>

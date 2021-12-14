@@ -1,7 +1,7 @@
 export enum RosterStatus {
-    SHOULD_PLAY,
-    COULD_PLAY,
-    SHOULD_NOT_PLAY,
+    SHOULD_PLAY = "Should Play",
+    COULD_PLAY =  "Could Play",
+    SHOULD_NOT_PLAY =  "Should Not Play",
 }
 
 export type Player = {

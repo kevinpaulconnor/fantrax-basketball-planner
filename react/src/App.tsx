@@ -3,10 +3,12 @@ import Amplify from '@aws-amplify/core';
 import { withAuthenticator, Grid, AmplifyProvider, Loader, Tabs, TabItem } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Header from './Header';
-import PlayerCollection from './SetGames/PlayerCollection';
+import MatchupTable from './SetGames/MatchupTable';
+import Footer from './SetGames/Footer';
+import PlayerRow from './SetGames/PlayerRow';
 import EditPlayers from './EditPlayers/EditPlayers';
 import { Matchup, Roster, Team } from './types';
-import { getMatchup, getTeams, getPlayers } from './services';
+import { getMatchup, getTeams, getPlayers, postPlayers } from './services';
 import './base.css';
 import config from './aws-exports';
 Amplify.configure(config);
@@ -20,29 +22,46 @@ function App({ signOut, user }: AppProps) {
   const [teams, setTeams] = useState<Team[] | null>(null);
   const [currentMatchup, setCurrentMatchup] = useState<Matchup | null>(null);
   const [roster, setRoster] = useState<Roster | null>(null);
+  const [saved, setSaved] = useState<String | null>(null);
   useEffect(() => {
     getPlayers(setRoster)
     getMatchup('current', setCurrentMatchup);
     getTeams(setTeams);
   }, [])
 
+  const handlePlayerSave = () => {
+   // await postPlayers(newRoster, (e:any) => {
+      setSaved("Roster updated");
+    //  getPlayers(setRoster));
+      setTimeout(()=> setSaved(null), 1000);
+   // }
+  }
+  
   if (!currentMatchup || !teams || !roster) {
     return <Loader />
   } else {
     return (
       <AmplifyProvider>
-        <Grid
-          // templateRows=".25fr 1fr 5fr 1fr"
-          // templateColumns="1fr"
-        >
-          <Header user={user} signOut={signOut} currentMatchup={currentMatchup} />
+        <Grid>
+          <Header user={user} saved={saved} signOut={signOut} currentMatchup={currentMatchup} />
           <Tabs>
             <TabItem title="Set Games">
-              <PlayerCollection 
-                setCurrentMatchup={setCurrentMatchup}
-                currentMatchup={currentMatchup}
-                roster={roster}
-                teams={teams} />
+                <MatchupTable
+                    shouldPlayChildren={
+                      <PlayerRow
+                        setCurrentMatchup={setCurrentMatchup}
+                        setPlayer={handlePlayerSave}
+                        currentMatchup={currentMatchup}
+                        player={roster.players[0]}
+                        teams={teams}
+                    />
+                  }
+                />
+                <Footer 
+                  totalPages={21} 
+                  callback={(id: number) => getMatchup(id, setCurrentMatchup)}
+                  initialPage={currentMatchup.id}
+                />
             </TabItem>           
             <TabItem title="Add/Remove Player">
               <EditPlayers

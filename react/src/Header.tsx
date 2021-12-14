@@ -6,10 +6,11 @@ import { createSchedule } from './services';
 interface HeaderProps {
     currentMatchup: Matchup,
     user: any,
-    signOut: Function
+    signOut: Function,
+    saved: String | null,
 }
 
-const Header = ({signOut, user, currentMatchup} :HeaderProps) => {
+const Header = ({signOut, user, saved, currentMatchup} :HeaderProps) => {
     const [loading, setLoading] = useState(false);
     const { tokens } = useTheme();
     return (
@@ -19,6 +20,8 @@ const Header = ({signOut, user, currentMatchup} :HeaderProps) => {
             justifyContent="end"
         >
             {loading && <Loader />}
+            {saved && <Text color={tokens.colors.green[60]}>{saved}</Text>}
+            <Text>(last modified {new Date(currentMatchup.lastModified).toLocaleString()})</Text> 
             <Button
             loadingText=""
             onClick={() => {
@@ -44,7 +47,6 @@ const Header = ({signOut, user, currentMatchup} :HeaderProps) => {
             <Text>Hello {user.attributes.email} </Text>
         </Flex>
         <Heading level={1}>Matchup {currentMatchup.id}: {currentMatchup.opponent} </Heading>
-        <Heading level={6}>(last modified {new Date(currentMatchup.lastModified).toLocaleString()})</Heading>
       </React.Fragment>
     )
 }

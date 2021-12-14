@@ -4,21 +4,49 @@ import {
     TableRow,
     IconCheckCircle,
     useTheme,
+    SelectField,
   } from '@aws-amplify/ui-react';
 import { getTeamFromId, formatPlayerString } from '../utilities';
 import { getMatchup } from '../services';
-import { Matchup, Player, Team } from '../types';
+import { Matchup, Player, RosterStatus, Team } from '../types';
+
+const StatusSelect = (initial: RosterStatus, setPlayer: Function) => {
+    const [value, setValue] = useState(initial);
+    const renderOption = (item: RosterStatus) => {
+        return <option key={item}>{item}</option>
+    }
+    const options = Object.values(RosterStatus);
+    return (
+
+    <SelectField
+      label="Roster Status"
+      labelHidden={true}
+      value={value}
+      onChange={(e) => {
+        console.log(e);
+        console.log(value);
+        Object.values(RosterStatus).forEach(key => {
+          if (key === e.target.value) {
+            setValue(key);
+            setPlayer();
+          }
+        })
+      }}
+    >
+        {options.map(renderOption)}
+    </SelectField>);
+}
 
 interface PlayerRowProps {
     setCurrentMatchup: Function,
+    setPlayer: Function,
     currentMatchup: Matchup,
     teams: Team[],
     player: Player,
 }
 
-const PlayerRow = ({currentMatchup, player, teams, setCurrentMatchup} :PlayerRowProps) => {
+const PlayerRow = ({currentMatchup, player, teams, setPlayer, setCurrentMatchup} :PlayerRowProps) => {
     const { tokens } = useTheme();
-    const [saved, setSaved] = useState(false);
     const matchupStart = new Date(currentMatchup.start).toISOString();
     const playerGameDay = (daysFromMatchupStart:number) => {
         let ret = '';
@@ -50,7 +78,7 @@ const PlayerRow = ({currentMatchup, player, teams, setCurrentMatchup} :PlayerRow
             <TableCell>{playerGameDay(4)}</TableCell>
             <TableCell>{playerGameDay(5)}</TableCell>
             <TableCell>{playerGameDay(6)}</TableCell>
-            <TableCell>lorem ipsum</TableCell>
+            <TableCell>{StatusSelect(RosterStatus.COULD_PLAY, setPlayer)}</TableCell>
             <TableCell>lorem ipsum</TableCell>
         </TableRow>
     )
