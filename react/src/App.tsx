@@ -7,7 +7,7 @@ import MatchupTable from './SetGames/MatchupTable';
 import Footer from './SetGames/Footer';
 import PlayerRow from './SetGames/PlayerRow';
 import EditPlayers from './EditPlayers/EditPlayers';
-import { Matchup, Roster, Team } from './types';
+import { Matchup, Roster, Team, Player } from './types';
 import { getMatchup, getTeams, getPlayers, postPlayers } from './services';
 import './base.css';
 import config from './aws-exports';
@@ -29,12 +29,24 @@ function App({ signOut, user }: AppProps) {
     getTeams(setTeams);
   }, [])
 
-  const handlePlayerSave = () => {
-   // await postPlayers(newRoster, (e:any) => {
-      setSaved("Roster updated");
-    //  getPlayers(setRoster));
-      setTimeout(()=> setSaved(null), 1000);
-   // }
+  const replacePlayer = (player: Player) :Player[] => {
+    let newPlayers :Player[] = [];
+    if (roster && roster.players) {
+      newPlayers = roster.players.filter(item => item.id !== player.id);
+      newPlayers.push(player);
+    }
+    return newPlayers;
+  }
+
+  const handlePlayerSave = async (player: Player) => {
+    const newRoster = replacePlayer(player);
+    await postPlayers(newRoster, async () => {
+      await getPlayers((players:Roster) => {
+        setRoster(players);
+        setSaved("Roster updated");
+        setTimeout(()=> setSaved(null), 1000);
+      })
+    })
   }
   
   if (!currentMatchup || !teams || !roster) {

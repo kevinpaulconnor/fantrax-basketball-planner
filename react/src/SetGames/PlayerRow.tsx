@@ -10,8 +10,7 @@ import { getTeamFromId, formatPlayerString } from '../utilities';
 import { getMatchup } from '../services';
 import { Matchup, Player, RosterStatus, Team } from '../types';
 
-const StatusSelect = (initial: RosterStatus, setPlayer: Function) => {
-    const [value, setValue] = useState(initial);
+const StatusSelect = (initial: RosterStatus, player: Player, setPlayer: Function) => {
     const renderOption = (item: RosterStatus) => {
         return <option key={item}>{item}</option>
     }
@@ -21,14 +20,13 @@ const StatusSelect = (initial: RosterStatus, setPlayer: Function) => {
     <SelectField
       label="Roster Status"
       labelHidden={true}
-      value={value}
+      value={player.status}
       onChange={(e) => {
-        console.log(e);
-        console.log(value);
         Object.values(RosterStatus).forEach(key => {
           if (key === e.target.value) {
-            setValue(key);
-            setPlayer();
+            const newPlayer = { ...player };
+            newPlayer.status = e.target.value;
+            setPlayer(newPlayer);
           }
         })
       }}
@@ -78,7 +76,7 @@ const PlayerRow = ({currentMatchup, player, teams, setPlayer, setCurrentMatchup}
             <TableCell>{playerGameDay(4)}</TableCell>
             <TableCell>{playerGameDay(5)}</TableCell>
             <TableCell>{playerGameDay(6)}</TableCell>
-            <TableCell>{StatusSelect(RosterStatus.COULD_PLAY, setPlayer)}</TableCell>
+            <TableCell>{StatusSelect(RosterStatus.COULD_PLAY, player, setPlayer)}</TableCell>
             <TableCell>lorem ipsum</TableCell>
         </TableRow>
     )

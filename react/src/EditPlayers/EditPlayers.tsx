@@ -3,7 +3,7 @@ import { Card, Flex, TextField, Heading,
     Text, Loader, CheckboxField, IconClose, useTheme } from '@aws-amplify/ui-react';
 import { findPlayers, postPlayers, getPlayers } from '../services';
 import { debounce, formatPlayerString } from '../utilities';
-import { Player, Roster } from '../types'; 
+import { Player, Roster, RosterStatus } from '../types'; 
 
 interface EditPlayersProps {
     roster: Roster,
@@ -33,6 +33,8 @@ const EditPlayers = ({ roster, setRoster } :EditPlayersProps) => {
         const id = parseInt(e.currentTarget.value);
         const newPlayer = possiblePlayers?.find(player => player.id === id);
         if (newPlayer) {
+            newPlayer.status = RosterStatus.COULD_PLAY;
+            newPlayer.notes = '';
             const newRoster = [...roster.players];
             newRoster.push(newPlayer);
             await postPlayers(newRoster, (e:any) => getPlayers(setRoster))
