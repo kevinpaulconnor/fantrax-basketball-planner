@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import {
     TableCell,
     TableRow,
-    IconCheckCircle,
+    TextField,
     useTheme,
     SelectField,
   } from '@aws-amplify/ui-react';
-import { getTeamFromId, formatPlayerString } from '../utilities';
+import { getTeamFromId, formatPlayerString, debounce } from '../utilities';
 import { getMatchup } from '../services';
 import { Matchup, Player, RosterStatus, Team } from '../types';
 
@@ -63,11 +63,16 @@ const PlayerRow = ({currentMatchup, player, teams, setPlayer, setCurrentMatchup}
         return ret;
     }
 
+    const handleNotesChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newPlayer = { ...player };
+        newPlayer.notes = e.target.value;
+        setPlayer(newPlayer);
+    })
+
     return (    
         <TableRow>
             <TableCell>
                 {formatPlayerString(player)}
-                <IconCheckCircle color={tokens.colors.green[60]} size="large"/>
             </TableCell>
             <TableCell>{playerGameDay(0)}</TableCell>
             <TableCell>{playerGameDay(1)}</TableCell>
@@ -77,7 +82,14 @@ const PlayerRow = ({currentMatchup, player, teams, setPlayer, setCurrentMatchup}
             <TableCell>{playerGameDay(5)}</TableCell>
             <TableCell>{playerGameDay(6)}</TableCell>
             <TableCell>{StatusSelect(RosterStatus.COULD_PLAY, player, setPlayer)}</TableCell>
-            <TableCell>lorem ipsum</TableCell>
+            <TableCell>
+                <TextField
+                label="Player Notes"
+                labelHidden={true}
+                defaultValue={player.notes}
+                onChange={handleNotesChange}
+                />
+            </TableCell>
         </TableRow>
     )
 }
