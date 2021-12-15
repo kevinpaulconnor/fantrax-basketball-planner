@@ -8,11 +8,14 @@ interface HeaderProps {
     user: any,
     signOut: Function,
     saved: String | null,
+    rosterLastModified: string,
 }
 
-const Header = ({signOut, user, saved, currentMatchup} :HeaderProps) => {
+const Header = ({signOut, user, saved, currentMatchup, rosterLastModified} :HeaderProps) => {
     const [loading, setLoading] = useState(false);
     const { tokens } = useTheme();
+    const modifiedDate = currentMatchup.lastModified > rosterLastModified ? 
+        currentMatchup.lastModified : rosterLastModified;
     return (
         <React.Fragment>
             <Flex
@@ -21,7 +24,7 @@ const Header = ({signOut, user, saved, currentMatchup} :HeaderProps) => {
         >
             {loading && <Loader />}
             {saved && <Text color={tokens.colors.green[60]}>{saved}</Text>}
-            <Text>(last modified {new Date(currentMatchup.lastModified).toLocaleString()})</Text> 
+            <Text>(last modified {new Date(modifiedDate).toLocaleString()})</Text> 
             <Button
             loadingText=""
             onClick={() => {

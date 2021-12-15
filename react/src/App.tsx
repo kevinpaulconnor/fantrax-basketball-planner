@@ -44,7 +44,7 @@ function App({ signOut, user }: AppProps) {
       await getPlayers((players:Roster) => {
         setRoster(players);
         setSaved("Roster updated");
-        setTimeout(()=> setSaved(null), 1000);
+        setTimeout(()=> setSaved(null), 2000);
       })
     })
   }
@@ -55,7 +55,13 @@ function App({ signOut, user }: AppProps) {
     return (
       <AmplifyProvider>
         <Grid>
-          <Header user={user} saved={saved} signOut={signOut} currentMatchup={currentMatchup} />
+          <Header 
+            user={user}
+            saved={saved}
+            signOut={signOut}
+            currentMatchup={currentMatchup}
+            rosterLastModified={roster.lastModified}
+          />
           <Tabs>
             <TabItem title="Set Games">
                 <MatchupTable
