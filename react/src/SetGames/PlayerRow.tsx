@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     TableCell,
     TableRow,
@@ -6,9 +6,10 @@ import {
     useTheme,
     SelectField,
   } from '@aws-amplify/ui-react';
-import { getTeamFromId, formatPlayerString, debounce } from '../utilities';
-import { getMatchup } from '../services';
-import { Matchup, Player, RosterStatus, Team } from '../types';
+import { formatPlayerString, debounce } from '../utilities';
+import '../base.css';
+import { AppState, Player, RosterStatus } from '../types';
+import PlayerGameDay from './PlayerGameDay';
 
 const StatusSelect = (initial: RosterStatus, player: Player, setPlayer: Function) => {
     const renderOption = (item: RosterStatus) => {
@@ -38,49 +39,33 @@ const StatusSelect = (initial: RosterStatus, player: Player, setPlayer: Function
 interface PlayerRowProps {
     setCurrentMatchup: Function,
     setPlayer: Function,
-    currentMatchup: Matchup,
-    teams: Team[],
     player: Player,
+    appState: AppState
 }
 
-const PlayerRow = ({currentMatchup, player, teams, setPlayer, setCurrentMatchup} :PlayerRowProps) => {
-    const { tokens } = useTheme();
-    const matchupStart = new Date(currentMatchup.start).toISOString();
-    const playerGameDay = (daysFromMatchupStart:number) => {
-        let ret = '';
-        let matchupDay = new Date(matchupStart);
-        matchupDay.setDate(matchupDay.getDate() + daysFromMatchupStart);
-        const possible = currentMatchup.games.filter(game => {
-            return matchupDay.getUTCDate() === new Date(game.date).getUTCDate() &&
-            (game.home_team === player.team.id || game.visitor_team === player.team.id)
-        });
-        if (possible.length === 1) {
-            const found = possible[0];
-            const visitor = getTeamFromId(teams, found.visitor_team);
-            const home = getTeamFromId(teams, found.home_team);
-            ret = `${visitor.abbreviation} @ ${home.abbreviation}`
-        }
-        return ret;
-    }
-
+const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowProps) => {
     const handleNotesChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newPlayer = { ...player };
         newPlayer.notes = e.target.value;
         setPlayer(newPlayer);
-    })
+    });
+    let gameDays = [];
+    for (var i = 0; i < 7; i++) {
+        gameDays.push(<PlayerGameDay 
+            daysFromMatchupStart={i}
+            selected={false} 
+            appState={appState}
+            player={player}
+            setCurrentMatchup={setCurrentMatchup}
+        />)
+    }
 
     return (    
         <TableRow>
             <TableCell>
                 {formatPlayerString(player)}
             </TableCell>
-            <TableCell>{playerGameDay(0)}</TableCell>
-            <TableCell>{playerGameDay(1)}</TableCell>
-            <TableCell>{playerGameDay(2)}</TableCell>
-            <TableCell>{playerGameDay(3)}</TableCell>
-            <TableCell>{playerGameDay(4)}</TableCell>
-            <TableCell>{playerGameDay(5)}</TableCell>
-            <TableCell>{playerGameDay(6)}</TableCell>
+            {gameDays}
             <TableCell>{StatusSelect(RosterStatus.COULD_PLAY, player, setPlayer)}</TableCell>
             <TableCell>
                 <TextField

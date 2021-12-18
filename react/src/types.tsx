@@ -1,3 +1,22 @@
+export interface AppState {
+    currentMatchup: Matchup | undefined,
+    roster: Roster | undefined,
+    teams: Team[] | undefined,
+}
+
+export interface AppStateAction {
+    type: AppStateActionKind,
+    roster?: Roster,
+    matchup?: Matchup,
+    teams?: Team[]
+}
+
+export enum AppStateActionKind {
+    SETPLAYERS = "SETPLAYERS",
+    SETMATCHUP = "SETMATCHUP",
+    SETTEAMS = "SETTEAMS",
+}   
+
 export enum RosterStatus {
     SHOULD_PLAY = "Should Play",
     COULD_PLAY =  "Could Play",
@@ -42,10 +61,10 @@ export type Game = {
 export type Matchup = {
     games: Array<Game>,
     opponent: string,
-    selectedGames: [{
+    selectedGames: {
         playerId: number,
         gameId: number
-    }],
+    }[],
     start: Date,
     end: Date,
     lastModified: string,

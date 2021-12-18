@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import Amplify from '@aws-amplify/core';
 import { withAuthenticator, Grid, AmplifyProvider, Loader, Tabs, TabItem } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Header from './Header';
 import MatchupTable from './SetGames/MatchupTable';
 import Footer from './SetGames/Footer';
-import PlayerRow from './SetGames/PlayerRow';
 import EditPlayers from './EditPlayers/EditPlayers';
-import { Matchup, Roster, Team, Player } from './types';
+import { Matchup, Roster, Team, 
+  Player, AppState, AppStateAction, AppStateActionKind } from './types';
 import { getMatchup, getTeams, getPlayers, postPlayers } from './services';
 import './base.css';
 import config from './aws-exports';
+import { generatePlayerRows } from './utilities';
 Amplify.configure(config);
 
 interface AppProps {
@@ -19,15 +20,36 @@ interface AppProps {
 }
 
 function App({ signOut, user }: AppProps) {
-  const [teams, setTeams] = useState<Team[] | null>(null);
-  const [currentMatchup, setCurrentMatchup] = useState<Matchup | null>(null);
-  const [roster, setRoster] = useState<Roster | null>(null);
   const [saved, setSaved] = useState<String | null>(null);
+  const initialState = {
+    currentMatchup: undefined,
+    roster: undefined,
+    teams: undefined
+  };
+  const [appState, dispatch] = useReducer(reducer, initialState);
+  const {currentMatchup, roster, teams} = appState;
+
+  const setRoster = (data :Roster) => dispatch({type: AppStateActionKind.SETPLAYERS, roster: data});
+  const setMatchup = (data:Matchup) => dispatch({type: AppStateActionKind.SETMATCHUP, matchup: data});
+
   useEffect(() => {
-    getPlayers(setRoster)
-    getMatchup('current', setCurrentMatchup);
-    getTeams(setTeams);
+    getPlayers(setRoster);
+    getMatchup('current', setMatchup);
+    getTeams((data: Team[]) => dispatch({type: AppStateActionKind.SETTEAMS, teams: data}));
   }, [])
+
+  function reducer(state: AppState, action: AppStateAction) : AppState {
+    switch (action.type) {
+      case AppStateActionKind.SETPLAYERS:
+        return {...state, roster: action.roster};
+      case AppStateActionKind.SETMATCHUP:
+        return {...state, currentMatchup: action.matchup};
+      case AppStateActionKind.SETTEAMS:
+        return {...state, teams: action.teams};
+      default:
+        throw new Error();
+    }
+  }
 
   const replacePlayer = (player: Player) :Player[] => {
     let newPlayers :Player[] = [];
@@ -65,19 +87,11 @@ function App({ signOut, user }: AppProps) {
           <Tabs>
             <TabItem title="Set Games">
                 <MatchupTable
-                    shouldPlayChildren={
-                      <PlayerRow
-                        setCurrentMatchup={setCurrentMatchup}
-                        setPlayer={handlePlayerSave}
-                        currentMatchup={currentMatchup}
-                        player={roster.players[0]}
-                        teams={teams}
-                    />
-                  }
+                    shouldPlayChildren={generatePlayerRows(appState, setMatchup, handlePlayerSave)}
                 />
                 <Footer 
                   totalPages={21} 
-                  callback={(id: number) => getMatchup(id, setCurrentMatchup)}
+                  callback={(id: number) => getMatchup(id, setMatchup)}
                   initialPage={currentMatchup.id}
                 />
             </TabItem>           
