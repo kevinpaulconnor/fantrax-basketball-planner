@@ -207,6 +207,13 @@ app.post('/players', async function(req, res) {
   res.json({success: 'put call succeed!', url: req.url});
 });
 
+app.post('/matchup/:id', async function(req, res) {
+  // overwrite the set of players on our roster
+  // so must pass in all current players to maintain
+  await write(req.body.data, matchupFilename(req.params.id));
+  res.json({success: 'put call succeed!', url: req.url});
+});
+
 // /**********************
 //  * Example get method *
 //  **********************/
