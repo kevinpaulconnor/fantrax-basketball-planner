@@ -5,6 +5,7 @@ import '@aws-amplify/ui-react/styles.css';
 import Header from './Header';
 import MatchupTable from './SetGames/MatchupTable';
 import Footer from './SetGames/Footer';
+import SelectedCount from './SelectedCount';
 import EditPlayers from './EditPlayers/EditPlayers';
 import { Matchup, Roster, Team, 
   Player, AppState, AppStateAction, AppStateActionKind, RosterStatus } from './types';
@@ -85,7 +86,7 @@ function App({ signOut, user }: AppProps) {
             rosterLastModified={roster.lastModified}
           />
           <Tabs>
-            <TabItem title="Set Games">
+            <TabItem title={<SelectedCount currentMatchup={currentMatchup} />}>
                 <MatchupTable
                     shouldPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_PLAY, setMatchup, handlePlayerSave)}
                     couldPlayChildren={generatePlayerRows(appState, RosterStatus.COULD_PLAY, setMatchup, handlePlayerSave)}
