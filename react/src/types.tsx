@@ -63,7 +63,8 @@ export type Matchup = {
     opponent: string,
     selectedGames: {
         playerId: number,
-        gameId: number
+        gameId: number,
+        index: number,
     }[],
     start: Date,
     end: Date,

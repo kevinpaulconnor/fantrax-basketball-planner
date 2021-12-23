@@ -1,5 +1,5 @@
 import { API } from 'aws-amplify';
-import { Player } from './types';
+import { Player, Matchup } from './types';
 
 /* API ajax methods to Amplify api */
 async function baseAPIFetch(endpoint:string, callback:Function) {
@@ -47,6 +47,18 @@ export async function postPlayers(playersArray: Array<Player>, callback: Functio
         { 
             body: {
                 data: playersArray
+            }
+        }
+    );
+}
+
+export async function postMatchup(matchup: Matchup, callback: Function) {
+    baseAPIPost(
+        `/matchup/${matchup.id}`,
+        callback, 
+        { 
+            body: {
+                data: matchup
             }
         }
     );

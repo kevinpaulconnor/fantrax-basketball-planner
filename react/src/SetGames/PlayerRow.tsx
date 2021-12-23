@@ -3,7 +3,6 @@ import {
     TableCell,
     TableRow,
     TextField,
-    useTheme,
     SelectField,
   } from '@aws-amplify/ui-react';
 import { formatPlayerString, debounce } from '../utilities';
@@ -49,11 +48,13 @@ const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowPr
         newPlayer.notes = e.target.value;
         setPlayer(newPlayer);
     });
+    const selectedGames = appState.currentMatchup!.selectedGames;
     let gameDays = [];
-    for (var i = 0; i < 7; i++) {
-        gameDays.push(<PlayerGameDay 
+    for (let i = 0; i < 7; i++) {
+        gameDays.push(<PlayerGameDay
+            key={i}
             daysFromMatchupStart={i}
-            selected={false} 
+            selected={selectedGames.some(game => game.playerId === player.id && game.index === i)} 
             appState={appState}
             player={player}
             setCurrentMatchup={setCurrentMatchup}
