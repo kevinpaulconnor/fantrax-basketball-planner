@@ -7,7 +7,7 @@ import MatchupTable from './SetGames/MatchupTable';
 import Footer from './SetGames/Footer';
 import EditPlayers from './EditPlayers/EditPlayers';
 import { Matchup, Roster, Team, 
-  Player, AppState, AppStateAction, AppStateActionKind } from './types';
+  Player, AppState, AppStateAction, AppStateActionKind, RosterStatus } from './types';
 import { getMatchup, getTeams, getPlayers, postPlayers } from './services';
 import './base.css';
 import config from './aws-exports';
@@ -87,7 +87,9 @@ function App({ signOut, user }: AppProps) {
           <Tabs>
             <TabItem title="Set Games">
                 <MatchupTable
-                    shouldPlayChildren={generatePlayerRows(appState, setMatchup, handlePlayerSave)}
+                    shouldPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_PLAY, setMatchup, handlePlayerSave)}
+                    couldPlayChildren={generatePlayerRows(appState, RosterStatus.COULD_PLAY, setMatchup, handlePlayerSave)}
+                    shouldNotPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_NOT_PLAY, setMatchup, handlePlayerSave)}
                 />
                 <Footer 
                   totalPages={21} 

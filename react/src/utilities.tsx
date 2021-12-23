@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Team, Player, AppState } from "./types";
+import { Team, Player, AppState, RosterStatus } from "./types";
 import PlayerRow from "./SetGames/PlayerRow";
 
 export function getTeamFromId(teams: Team[], id: number) :Team {
@@ -10,12 +10,13 @@ export const formatPlayerString = (player:Player) => {
     return `${player.first_name} ${player.last_name}, ${player.position}, ${player.team.full_name}`;
 }
 
-export const generatePlayerRows = (appState: AppState, setCurrentMatchup: Function, handlePlayerSave: Function) => {
+export const generatePlayerRows = (appState: AppState, rosterStatus: RosterStatus, setCurrentMatchup: Function, handlePlayerSave: Function) => {
     const { roster } = appState;
     let ret = <Fragment/>;
     if (roster && roster.players.length > 0) {
         let playerRows :JSX.Element[] = [];
-        roster.players.forEach(player => {
+        const filteredPlayers = roster.players.filter(player => player.status === rosterStatus);
+        filteredPlayers.forEach(player => {
             playerRows.push(<PlayerRow
                 key={player.id}
                 setCurrentMatchup={setCurrentMatchup}
