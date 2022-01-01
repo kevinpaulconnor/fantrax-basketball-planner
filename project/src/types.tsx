@@ -1,4 +1,5 @@
 export interface AppState {
+    error: boolean,
     currentMatchup: Matchup | undefined,
     roster: Roster | undefined,
     teams: Team[] | undefined,
@@ -6,12 +7,14 @@ export interface AppState {
 
 export interface AppStateAction {
     type: AppStateActionKind,
+    error?: boolean,
     roster?: Roster,
     matchup?: Matchup,
     teams?: Team[]
 }
 
 export enum AppStateActionKind {
+    SETERROR = "ERROR",
     SETPLAYERS = "SETPLAYERS",
     SETMATCHUP = "SETMATCHUP",
     SETTEAMS = "SETTEAMS",

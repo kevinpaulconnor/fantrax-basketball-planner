@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer } from 'react';
 import Amplify from '@aws-amplify/core';
-import { withAuthenticator, Grid, AmplifyProvider, Loader, Tabs, TabItem } from '@aws-amplify/ui-react';
+import { withAuthenticator, Button, Grid, AmplifyProvider, Loader, Tabs, TabItem } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Header from './Header';
 import MatchupTable from './SetGames/MatchupTable';
@@ -9,7 +9,7 @@ import SelectedCount from './SelectedCount';
 import EditPlayers from './EditPlayers/EditPlayers';
 import { Matchup, Roster, Team, 
   Player, AppState, AppStateAction, AppStateActionKind, RosterStatus } from './types';
-import { getMatchup, getTeams, getPlayers, postPlayers } from './services';
+import { getMatchup, getTeams, getPlayers, postPlayers, createSchedule} from './services';
 import './base.css';
 import config from './aws-exports';
 import { generatePlayerRows } from './utilities';
@@ -23,15 +23,24 @@ interface AppProps {
 function App({ signOut, user }: AppProps) {
   const [saved, setSaved] = useState<String | null>(null);
   const initialState = {
+    error: false,
     currentMatchup: undefined,
     roster: undefined,
     teams: undefined
   };
   const [appState, dispatch] = useReducer(reducer, initialState);
-  const {currentMatchup, roster, teams} = appState;
+  const {currentMatchup, roster, teams, error} = appState;
+
+  const handler = (error: boolean, action: AppStateAction) => {
+    if (error) {
+      dispatch({type: AppStateActionKind.SETERROR, error: true});
+    } else {
+      dispatch(action)
+    }
+  }
 
   const setRoster = (data :Roster) => dispatch({type: AppStateActionKind.SETPLAYERS, roster: data});
-  const setMatchup = (data:Matchup) => dispatch({type: AppStateActionKind.SETMATCHUP, matchup: data});
+  const setMatchup = (data :Matchup, error: boolean) => handler(error, {type: AppStateActionKind.SETMATCHUP, matchup: data});
 
   useEffect(() => {
     getPlayers(setRoster);
@@ -47,6 +56,8 @@ function App({ signOut, user }: AppProps) {
         return {...state, currentMatchup: action.matchup};
       case AppStateActionKind.SETTEAMS:
         return {...state, teams: action.teams};
+      case AppStateActionKind.SETERROR:
+        return {...state, error: true};
       default:
         throw new Error();
     }
@@ -71,8 +82,22 @@ function App({ signOut, user }: AppProps) {
       })
     })
   }
-  
-  if (!currentMatchup || !teams || !roster) {
+  if (error) {
+    return (
+      <Button
+        loadingText=""
+        onClick={() => {
+            createSchedule(() => {
+                window.location.reload();
+  ;               }
+            )
+        }}
+        ariaLabel=""
+        >
+        There has been a Data Error, Refresh Schedule (!)
+      </Button>
+    )
+  } else if (!currentMatchup || !teams || !roster) {
     return <Loader />
   } else {
     return (

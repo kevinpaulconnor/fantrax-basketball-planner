@@ -7,6 +7,7 @@ async function baseAPIFetch(endpoint:string, callback:Function) {
         const data = await API.get('fantraxBasketball', endpoint, '');
         callback(data.data);
     } catch (err) {
+        callback(err, true);
         console.log('error:', err);
     }
 }
