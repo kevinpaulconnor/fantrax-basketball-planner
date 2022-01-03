@@ -161,7 +161,7 @@ app.get('/matchup/:id', async function(req, res) {
 app.get('/teams', async function(req, res) {
   const filename = 'nbateams.json';
   let data = await read(filename);
-  if (data.data === "NoSuchKey") {
+  if (data === "NoSuchKey") {
     const url = `${BDLBaseUrl}/teams`;
     const response = await axios.get(url);
     data = response.data.data;

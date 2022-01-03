@@ -9,9 +9,12 @@ import {
 
 interface MatchupTableProps {
     shouldPlayChildren: React.ReactNode,
-}
+    couldPlayChildren: React.ReactNode,
+    shouldNotPlayChildren: React.ReactNode,
 
-const MatchupTable = ({shouldPlayChildren} :MatchupTableProps) => {
+  }
+
+const MatchupTable = ({shouldPlayChildren, couldPlayChildren, shouldNotPlayChildren} :MatchupTableProps) => {
     return (      
         <Table>
           <TableHead>
@@ -32,13 +35,15 @@ const MatchupTable = ({shouldPlayChildren} :MatchupTableProps) => {
             <TableRow>
               <TableCell as="th">Should Play</TableCell>
             </TableRow>
-            {shouldPlayChildren}
+              {shouldPlayChildren}
             <TableRow>
               <TableCell as="th">Could Play</TableCell>
             </TableRow>
+              {couldPlayChildren}
             <TableRow>
               <TableCell as="th">Should Not Play</TableCell>
             </TableRow>
+              {shouldNotPlayChildren}
           </TableBody>
         </Table>
     )
