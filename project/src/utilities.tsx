@@ -7,7 +7,7 @@ export function getTeamFromId(teams: Team[], id: number) :Team {
 }
 
 export const formatPlayerString = (player:Player) => {
-    return `${player.first_name} ${player.last_name}, ${player.position}, ${player.team.full_name}`;
+    return `${player.first_name} ${player.last_name} ${player.team.abbreviation}`;
 }
 
 export const generatePlayerRows = (appState: AppState, rosterStatus: RosterStatus, setCurrentMatchup: Function, handlePlayerSave: Function) => {
