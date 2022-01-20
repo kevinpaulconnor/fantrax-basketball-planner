@@ -71,6 +71,8 @@ const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowPr
             <TableCell>
                 <TextField
                 label="Player Notes"
+                fontSize="0.8rem"
+                isMultiline={true}
                 labelHidden={true}
                 defaultValue={player.notes}
                 onChange={handleNotesChange}
