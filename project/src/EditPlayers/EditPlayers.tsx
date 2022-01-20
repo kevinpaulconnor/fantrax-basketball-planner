@@ -96,23 +96,23 @@ const EditPlayers = ({ roster, setRoster } :EditPlayersProps) => {
                 direction="row"
                 justifyContent="center"
             >
-            <TextField
-                label="Find Player"
-                descriptiveText="At least two letters. Spaces will work, but put first name first: 'Lebron James' returns results; 'James Lebron' does not"
-                onChange={handleChange}
-            />
-            <Card>
-                <Heading level={5}>Current Players</Heading>
-                {roster.players && renderCurrentPlayers()}
-            </Card>
-            </Flex>
+                <Card>
+                    <TextField
+                        label="Find Player"
+                        descriptiveText="At least two letters. Spaces will work, but put first name first: 'Lebron James' returns results; 'James Lebron' does not"
+                        onChange={handleChange}
+                    />
+                    <Heading level={5}>Current Players</Heading>
+                    {roster.players && renderCurrentPlayers()}
+                </Card>
 
-            <Card>
-                {possiblePlayers !== null && !loading &&
-                    renderPossiblePlayers()
-                }
-                {loading && <Loader />}
-            </Card>
+                <Card>
+                    {possiblePlayers !== null && !loading &&
+                        renderPossiblePlayers()
+                    }
+                    {loading && <Loader />}
+                </Card>
+            </Flex>
         </Card>
     )
 }
