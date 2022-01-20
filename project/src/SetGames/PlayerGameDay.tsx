@@ -61,7 +61,7 @@ const PlayerGameDay = ({daysFromMatchupStart, appState, player, setCurrentMatchu
                             })
                         } else {
                             newMatchup.selectedGames = newMatchup.selectedGames.filter(game => {
-                                return game.gameId !== parsedGameId && game.playerId !== parsedPlayerId;
+                                return game.gameId !== parsedGameId || game.playerId !== parsedPlayerId;
                             });
                         }
                         await postMatchup(newMatchup, (e:any) => getMatchup(newMatchup.id, setCurrentMatchup))
