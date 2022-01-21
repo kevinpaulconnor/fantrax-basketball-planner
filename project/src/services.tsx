@@ -28,6 +28,10 @@ export async function getPlayers(callback:Function) {
     baseAPIFetch(`/players`, callback);
 }
 
+export async function updatePlayerStats(callback:Function) {
+    baseAPIFetch(`/updatePlayerStats`, callback);
+}
+
 export async function findPlayers(value:string, callback:Function) {
     baseAPIFetch(`/bdl-proxy/players/?search=${value}&per_page=50`, callback);
 }

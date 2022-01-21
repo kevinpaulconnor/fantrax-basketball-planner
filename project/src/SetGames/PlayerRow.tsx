@@ -5,9 +5,9 @@ import {
     TextField,
     SelectField,
   } from '@aws-amplify/ui-react';
-import { formatPlayerString, debounce } from '../utilities';
+import { formatPlayerString, debounce , stats} from '../utilities';
 import '../base.css';
-import { AppState, Player, RosterStatus } from '../types';
+import { AppState, Player, RosterStatus, seasonStats } from '../types';
 import PlayerGameDay from './PlayerGameDay';
 
 const StatusSelect = (initial: RosterStatus, player: Player, setPlayer: Function) => {
@@ -48,6 +48,12 @@ const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowPr
         newPlayer.notes = e.target.value;
         setPlayer(newPlayer);
     });
+    const { currentStat } = appState;
+    const statIndex = stats[currentStat!].id;
+    let statValue = 'Not found';
+    if (statIndex) {
+        statValue = player.stats[statIndex as keyof seasonStats].toString();
+    }
     const selectedGames = appState.currentMatchup!.selectedGames;
     let gameDays = [];
     for (let i = 0; i < 7; i++) {
@@ -66,11 +72,16 @@ const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowPr
             <TableCell>
                 {formatPlayerString(player)}
             </TableCell>
+            <TableCell>
+                {statValue}
+            </TableCell>
             {gameDays}
             <TableCell>{StatusSelect(RosterStatus.COULD_PLAY, player, setPlayer)}</TableCell>
             <TableCell>
                 <TextField
                 label="Player Notes"
+                fontSize="0.8rem"
+                isMultiline={true}
                 labelHidden={true}
                 defaultValue={player.notes}
                 onChange={handleNotesChange}

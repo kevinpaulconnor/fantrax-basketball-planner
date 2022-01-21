@@ -200,6 +200,34 @@ app.get('/players', async function(req, res) {
     url: req.url});
 });
 
+app.get('/updatePlayerStats', async function(req, res) {
+  const response = await read('players.json');
+  if (response !== "NoSuchKey") {
+    async function getPlayerStats(playerIds) {
+      const url = `${BDLBaseUrl}/season_averages?${playerIds}`;
+      const response = await axios.get(url);
+      return response.data;
+    }
+    let playerIds = [];
+    let newPlayers = [];
+    response.data.forEach(item => {
+      playerIds.push(`player_ids[]=${item.id}&`);
+    })
+    const concatenator = (previousValue, currentValue) => previousValue + currentValue;
+    const stats = await getPlayerStats(playerIds.reduce(concatenator));
+    response.data.forEach(item => {
+      item.stats = stats.data.filter(playerStats => {
+        return item.id === playerStats.player_id;
+      })[0];
+      newPlayers.push(item);
+    })
+    await write(newPlayers, 'players.json');
+  }
+  res.json({
+    success: 'get call succeed!',
+    url: req.url});
+});
+
 app.post('/players', async function(req, res) {
   // overwrite the set of players on our roster
   // so must pass in all current players to maintain

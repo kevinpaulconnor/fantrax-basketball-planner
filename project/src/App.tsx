@@ -12,7 +12,7 @@ import { Matchup, Roster, Team,
 import { getMatchup, getTeams, getPlayers, postPlayers, createSchedule} from './services';
 import './base.css';
 import config from './aws-exports';
-import { generatePlayerRows } from './utilities';
+import { generatePlayerRows, stats } from './utilities';
 Amplify.configure(config);
 
 interface AppProps {
@@ -25,6 +25,7 @@ function App({ signOut, user }: AppProps) {
   const initialState = {
     error: false,
     currentMatchup: undefined,
+    currentStat: 0,
     roster: undefined,
     teams: undefined
   };
@@ -41,6 +42,16 @@ function App({ signOut, user }: AppProps) {
 
   const setRoster = (data :Roster) => dispatch({type: AppStateActionKind.SETPLAYERS, roster: data});
   const setMatchup = (data :Matchup, error: boolean) => handler(error, {type: AppStateActionKind.SETMATCHUP, matchup: data});
+  const setCurrentStat = () => {
+    let statToSet = appState.currentStat! + 1;
+    if (statToSet === stats.length) {
+      statToSet = 0;
+    }
+    dispatch({
+      type: AppStateActionKind.SETSTAT,
+      stat: statToSet,
+    });
+  }
 
   useEffect(() => {
     getPlayers(setRoster);
@@ -54,6 +65,8 @@ function App({ signOut, user }: AppProps) {
         return {...state, roster: action.roster};
       case AppStateActionKind.SETMATCHUP:
         return {...state, currentMatchup: action.matchup};
+      case AppStateActionKind.SETSTAT:
+        return {...state, currentStat: action.stat};
       case AppStateActionKind.SETTEAMS:
         return {...state, teams: action.teams};
       case AppStateActionKind.SETERROR:
@@ -113,9 +126,11 @@ function App({ signOut, user }: AppProps) {
           <Tabs>
             <TabItem title={<SelectedCount currentMatchup={currentMatchup} />}>
                 <MatchupTable
-                    shouldPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_PLAY, setMatchup, handlePlayerSave)}
-                    couldPlayChildren={generatePlayerRows(appState, RosterStatus.COULD_PLAY, setMatchup, handlePlayerSave)}
-                    shouldNotPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_NOT_PLAY, setMatchup, handlePlayerSave)}
+                  currentStat={appState.currentStat}
+                  setCurrentStat={setCurrentStat}
+                  shouldPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_PLAY, setMatchup, handlePlayerSave)}
+                  couldPlayChildren={generatePlayerRows(appState, RosterStatus.COULD_PLAY, setMatchup, handlePlayerSave)}
+                  shouldNotPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_NOT_PLAY, setMatchup, handlePlayerSave)}
                 />
                 <Footer 
                   totalPages={21} 

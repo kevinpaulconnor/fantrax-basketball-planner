@@ -7,7 +7,7 @@ export function getTeamFromId(teams: Team[], id: number) :Team {
 }
 
 export const formatPlayerString = (player:Player) => {
-    return `${player.first_name} ${player.last_name}, ${player.position}, ${player.team.full_name}`;
+    return `${player.first_name} ${player.last_name} ${player.team.abbreviation}`;
 }
 
 export const generatePlayerRows = (appState: AppState, rosterStatus: RosterStatus, setCurrentMatchup: Function, handlePlayerSave: Function) => {
@@ -15,7 +15,16 @@ export const generatePlayerRows = (appState: AppState, rosterStatus: RosterStatu
     let ret = <Fragment/>;
     if (roster && roster.players.length > 0) {
         let playerRows :JSX.Element[] = [];
-        const filteredPlayers = roster.players.filter(player => player.status === rosterStatus);
+        const filteredPlayers = roster.players.filter(player => player.status === rosterStatus)
+            .sort((a, b) => {
+                if (a.last_name > b.last_name) {
+                    return 1
+                }
+                if (b.last_name > a.last_name) {
+                    return -1;
+                }
+                return 0;
+            });
         filteredPlayers.forEach(player => {
             playerRows.push(<PlayerRow
                 key={player.id}
@@ -37,3 +46,47 @@ export const debounce = (fn: Function, ms = 300) => {
         timeoutId = setTimeout(() => fn.apply(this, args), ms);
     };
 };
+
+export const stats = [{
+    id:'min',
+    title:'MIN'
+  }, {
+    id: 'ast',
+    title: 'AST'
+  },
+  {
+    id: 'blk',
+    title: 'BLK'
+  },
+  {
+    id: 'fg3m',
+    title: '3PM'
+  },
+  {
+    id: 'fg_pct',
+    title: 'FG%'
+  },
+  {
+    id: 'ft_pct',
+    title: 'FT%'
+  },
+  {
+    id: 'ftm',
+    title: 'FTM'
+  },
+  {
+    id: 'pts',
+    title: 'PTS'
+  },
+  {
+    id: 'reb',
+    title: 'REB'
+  },
+  {
+    id: 'stl',
+    title: 'STL'
+  },
+  {
+    id: 'turnover',
+    title: 'TO'
+  },];
