@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Flex, Button, Heading, Text, Loader, useTheme } from '@aws-amplify/ui-react';
 import { Matchup } from './types'; 
-import { createSchedule } from './services';
+import { createSchedule, updatePlayerStats } from './services';
 
 interface HeaderProps {
     currentMatchup: Matchup,
@@ -39,6 +39,20 @@ const Header = ({signOut, user, saved, currentMatchup, rosterLastModified} :Head
             color={tokens.colors.red[90]}
             >
             Refresh Schedule (!)
+            </Button>
+            <Button
+            loadingText=""
+            onClick={() => {
+                setLoading(true);
+                updatePlayerStats(() => {
+                    setLoading(false)
+    ;               }
+                )
+            }}
+            ariaLabel=""
+            color={tokens.colors.red[90]}
+            >
+            Update Player Stats
             </Button>
             <Button
             loadingText=""

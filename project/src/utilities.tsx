@@ -46,3 +46,47 @@ export const debounce = (fn: Function, ms = 300) => {
         timeoutId = setTimeout(() => fn.apply(this, args), ms);
     };
 };
+
+export const stats = [{
+    id:'min',
+    title:'MIN'
+  }, {
+    id: 'ast',
+    title: 'AST'
+  },
+  {
+    id: 'blk',
+    title: 'BLK'
+  },
+  {
+    id: 'fg3m',
+    title: '3PM'
+  },
+  {
+    id: 'fg_pct',
+    title: 'FG%'
+  },
+  {
+    id: 'ft_pct',
+    title: 'FT%'
+  },
+  {
+    id: 'ftm',
+    title: 'FTM'
+  },
+  {
+    id: 'pts',
+    title: 'PTS'
+  },
+  {
+    id: 'reb',
+    title: 'REB'
+  },
+  {
+    id: 'stl',
+    title: 'STL'
+  },
+  {
+    id: 'turnover',
+    title: 'TO'
+  },];
