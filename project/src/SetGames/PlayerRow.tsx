@@ -51,7 +51,7 @@ const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowPr
     const { currentStat } = appState;
     const statIndex = stats[currentStat!].id;
     let statValue = 'Not found';
-    if (statIndex) {
+    if (statIndex && player.stats) {
         statValue = player.stats[statIndex as keyof seasonStats].toString();
     }
     const selectedGames = appState.currentMatchup!.selectedGames;
