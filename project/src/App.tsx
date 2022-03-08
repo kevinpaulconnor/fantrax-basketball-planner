@@ -127,6 +127,7 @@ function App({ signOut, user }: AppProps) {
             <TabItem title={<SelectedCount currentMatchup={currentMatchup} />}>
                 <MatchupTable
                   currentStat={appState.currentStat}
+                  matchupLength={currentMatchup.matchupLength}
                   setCurrentStat={setCurrentStat}
                   shouldPlayChildren={generatePlayerRows(appState, RosterStatus.SHOULD_PLAY, setMatchup, handlePlayerSave)}
                   couldPlayChildren={generatePlayerRows(appState, RosterStatus.COULD_PLAY, setMatchup, handlePlayerSave)}
