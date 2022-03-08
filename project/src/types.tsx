@@ -90,5 +90,6 @@ export type Matchup = {
     start: Date,
     end: Date,
     lastModified: string,
-    id: number
+    id: number,
+    matchupLength: number,
 };

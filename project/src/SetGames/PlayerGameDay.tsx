@@ -24,7 +24,7 @@ const PlayerGameDay = ({daysFromMatchupStart, appState, player, setCurrentMatchu
         let found = null;
         let bgColor = tokens.colors.background.primary;
         let matchupDay = new Date(matchupStart);
-        matchupDay.setDate(matchupDay.getDate() + daysFromMatchupStart);
+        matchupDay.setUTCDate(matchupDay.getUTCDate() + daysFromMatchupStart);
         const possible = currentMatchup.games.filter(game => {
             return matchupDay.getUTCDate() === new Date(game.date).getUTCDate() &&
             (game.home_team === player.team.id || game.visitor_team === player.team.id)

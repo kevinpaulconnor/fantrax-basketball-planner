@@ -56,7 +56,7 @@ const PlayerRow = ({appState, player, setPlayer, setCurrentMatchup} :PlayerRowPr
     }
     const selectedGames = appState.currentMatchup!.selectedGames;
     let gameDays = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < appState.currentMatchup!.matchupLength; i++) {
         gameDays.push(<PlayerGameDay
             key={i}
             daysFromMatchupStart={i}

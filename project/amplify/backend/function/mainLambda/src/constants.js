@@ -100,12 +100,14 @@ module.exports.matchupDates = [
         opponent: "Playoffs Round 2",
         start: new Date("2022-03-07").toISOString(),
         end: new Date("2022-03-20").toISOString(),
+        matchupLength: 14,
         // probably has a different gp limit?
     },
     {
         opponent: "Playoffs Round 3",
         start: new Date("2022-03-21").toISOString(),
         end: new Date("2022-04-03").toISOString(),
+        matchupLength: 14,
         // probably has a different gp limit?
     },
     ];
